@@ -8,15 +8,22 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+
+    donations = db.relationship('Donation', backref='donor', lazy=True)
+    requests = db.relationship('Request', backref='recipient', lazy=True)
+
 class Donation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     donor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     item = db.Column(db.String(150), nullable=False)
+    category = db.Column(db.String(50), default='General')
     quantity = db.Column(db.String(50))
     description = db.Column(db.Text)
     location = db.Column(db.String(100))
     matched = db.Column(db.Boolean, default=False)
     flagged = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
     # Relationships
     media = db.relationship('DonationMedia', backref='donation', lazy=True, cascade='all, delete-orphan')
     reports = db.relationship('DonationReport', backref='donation', lazy=True, cascade='all, delete-orphan')
@@ -25,16 +32,22 @@ class Request(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     item_needed = db.Column(db.String(150), nullable=False)
+    category = db.Column(db.String(50), default='General')
     quantity = db.Column(db.String(50))
     reason = db.Column(db.Text)
     location = db.Column(db.String(100))
     fulfilled = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     donation_id = db.Column(db.Integer, db.ForeignKey('donation.id'), nullable=False)
     request_id = db.Column(db.Integer, db.ForeignKey('request.id'), nullable=False)
     status = db.Column(db.String(20), default='matched')  # matched | fulfilled | cancelled
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    donation = db.relationship('Donation', backref=db.backref('matches', lazy=True))
+    request_item = db.relationship('Request', backref=db.backref('matches', lazy=True))
 
 class DonationMedia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,4 +60,4 @@ class DonationReport(db.Model):
     donation_id = db.Column(db.Integer, db.ForeignKey('donation.id'), nullable=False)
     reporter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     reason = db.Column(db.String(300))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

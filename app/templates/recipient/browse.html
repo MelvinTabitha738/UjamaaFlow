@@ -3,57 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Browse Donations</title>
+  <title>Browse Available Donations - UjamaaFlow</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9fafb;
-      color: #1f2937;
-      line-height: 1.6;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; color: #1f2937; line-height: 1.6; }
 
     /* Navbar */
-    nav {
+    .navbar {
       background-color: #1E40AF;
-      padding: 12px 20px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
     }
 
-    nav .logo {
+    .logo {
       color: white;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
       text-decoration: none;
-    }
-
-    nav ul {
-      list-style: none;
       display: flex;
-      gap: 20px;
       align-items: center;
+      gap: 8px;
     }
 
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.3s ease;
-    }
+    .logo i { color: #EA580C; }
 
-    nav ul li a:hover {
-      color: #93c5fd;
-    }
+    .nav-menu { display: flex; align-items: center; gap: 20px; }
+    .nav-links { list-style: none; display: flex; gap: 20px; }
+    .nav-links a { color: white; text-decoration: none; font-size: 15px; font-weight: 500; }
+    .nav-links a:hover { color: #FED7AA; }
+    .mobile-menu-btn { display: none; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
-    nav .logout-btn {
+    .logout-btn {
       background-color: #C2410C;
       color: white;
       padding: 8px 14px;
@@ -61,22 +46,17 @@
       border: none;
       cursor: pointer;
       font-size: 14px;
-      transition: background 0.3s ease;
-    }
-
-    nav .logout-btn:hover {
-      background-color: #f97316;
     }
 
     /* Container */
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 30px auto;
-      padding: 0 20px;
+      padding: 0 16px;
     }
 
     h1 {
-      font-size: 28px;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: bold;
       text-align: center;
       color: #1E40AF;
@@ -88,174 +68,229 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 30px;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .filters input {
-      padding: 12px 16px;
-      font-size: 16px;
+    .filters input, .filters select {
+      padding: 10px 14px;
+      font-size: 0.95rem;
       border-radius: 8px;
       border: 1px solid #cbd5e1;
       outline-color: #60a5fa;
+      flex: 1;
+      min-width: 150px;
     }
 
     .filters button {
       background-color: #1E40AF;
       color: white;
-      padding: 12px 20px;
+      padding: 10px 20px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
+      font-weight: 600;
       transition: background 0.3s ease;
     }
 
-    .filters button:hover {
-      background-color: #3B82F6;
+    .filters button:hover { background-color: #3B82F6; }
+
+    /* RESPONSIVE CARD GRID SCALING */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
     }
 
-    /* Cards */
     .card {
       background: #fff;
-      padding: 20px;
+      padding: 16px;
       border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       transition: transform 0.2s ease;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-    }
+    .card:hover { transform: translateY(-4px); }
 
     .item {
       font-weight: bold;
-      font-size: 18px;
+      font-size: 1.05rem;
       color: #2563eb;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
+    }
+
+    .category-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 8px;
     }
 
     .muted {
       color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
     }
 
     .card img {
-      max-width: 220px;
-      border-radius: 10px;
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
       border: 1px solid #e5e7eb;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     /* Report form */
     .report {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
     .report input {
       flex: 1;
-      padding: 10px 14px;
-      font-size: 14px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      border-radius: 6px;
       border: 1px solid #cbd5e1;
-      outline-color: #60a5fa;
     }
 
     .report button {
       background-color: #C2410C;
       color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
       border: none;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-size: 0.85rem;
     }
 
-    .report button:hover {
-      background-color: #f97316;
-    }
+    .report button:hover { background-color: #f97316; }
 
-    /* Empty state */
     .empty {
       text-align: center;
       color: #6b7280;
       padding: 40px;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      grid-column: 1 / -1;
     }
 
     @media (max-width: 768px) {
-      nav ul {
+      .mobile-menu-btn { display: block; }
+      .nav-menu {
+        position: absolute;
+        top: 100%; left: 0; width: 100%;
+        background: #1E40AF;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 20px;
+        gap: 12px;
+        display: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      }
+      .nav-menu.active { display: flex; }
+      .nav-links { flex-direction: column; gap: 10px; width: 100%; }
+
+      .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 12px;
       }
 
-      .filters {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .card img {
-        max-width: 100%;
-      }
-
-      .report {
-        flex-direction: column;
-      }
+      .card { padding: 12px; }
+      .item { font-size: 0.95rem; }
+      .muted { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
   <!-- Navbar -->
-  <nav>
-    <a href="{{ url_for('main.dashboard') }}" class="logo">UjamaaFlow</a>
-    <ul>
-      <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-      <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
-      
-      <li>
-        <form action="{{ url_for('auth.logout') }}" method="POST" style="display:inline;">
-          <button type="submit" class="logout-btn">Logout</button>
-        </form>
-      </li>
-    </ul>
+  <nav class="navbar">
+    <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('main.request_resource') }}">Request Resource</a></li>
+        <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      </ul>
+    </div>
   </nav>
 
   <!-- Main Content -->
   <div class="container">
-    <h1>Available Donations</h1>
+    <h1>Available Community Donations</h1>
+    
     <form class="filters" method="GET" action="{{ url_for('main.browse') }}">
-      <input type="text" name="q" placeholder="Search items or description" value="{{ q }}" />
+      <input type="text" name="q" placeholder="Search item name or keyword" value="{{ q }}" />
+      <select name="category">
+        <option value="all">All Categories</option>
+        <option value="food" {% if category == 'food' %}selected{% endif %}>Food & Groceries</option>
+        <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing & Shoes</option>
+        <option value="books" {% if category == 'books' %}selected{% endif %}>Books & Stationery</option>
+        <option value="hygiene" {% if category == 'hygiene' %}selected{% endif %}>Hygiene Items</option>
+        <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
+        <option value="household" {% if category == 'household' %}selected{% endif %}>Household Items</option>
+      </select>
       <input type="text" name="location" placeholder="Location" value="{{ location }}" />
-      <button type="submit">Search</button>
+      <button type="submit"><i class="fas fa-search"></i> Filter</button>
     </form>
 
-    {% if donations %}
-      {% for d in donations %}
-        <div class="card">
-          <div class="item">{{ d.item }}</div>
-          {% if d.description %}
-            <div class="muted">{{ d.description }}</div>
-          {% endif %}
-          <div class="muted">
-            Quantity: {{ d.quantity or 'N/A' }} • Location: {{ d.location or 'N/A' }}
+    <div class="cards-grid">
+      {% if donations and donations|length > 0 %}
+        {% for d in donations %}
+          <div class="card">
+            <div>
+              <span class="category-tag">{{ d.category or 'General' }}</span>
+              <div class="item">{{ d.item }}</div>
+              {% if d.description %}
+                <div class="muted">"{{ d.description }}"</div>
+              {% endif %}
+              <div class="muted">
+                <strong>Qty:</strong> {{ d.quantity or 'N/A' }} • <strong>Loc:</strong> {{ d.location or 'N/A' }}
+              </div>
+            </div>
+            {% if d.media and d.media|length > 0 %}
+              <img src="{{ d.media[0].file_path }}" alt="Donation image" />
+            {% endif %}
+            <form class="report" action="{{ url_for('main.report_donation', donation_id=d.id) }}" method="POST">
+              <input type="text" name="reason" placeholder="Report issue..." />
+              <button type="submit">Report</button>
+            </form>
           </div>
-          {% if d.media and d.media|length > 0 %}
-            <img src="{{ d.media[0].file_path }}" alt="Donation image" />
-          {% endif %}
-          <form class="report" action="{{ url_for('main.report_donation', donation_id=d.id) }}" method="POST">
-            <input type="text" name="reason" placeholder="Report reason (optional)" />
-            <button type="submit">Report</button>
-          </form>
+        {% endfor %}
+      {% else %}
+        <div class="empty">
+          <i class="fas fa-search" style="font-size: 2rem; color: #2563EB; margin-bottom: 8px;"></i>
+          <p>No donations found matching your criteria. Try clearing search filters.</p>
         </div>
-      {% endfor %}
-    {% else %}
-      <div class="empty">No donations found. Try different filters.</div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
+    }
+  </script>
 </body>
 </html>

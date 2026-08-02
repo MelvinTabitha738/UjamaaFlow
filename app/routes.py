@@ -11,7 +11,15 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    return render_template('home.html')
+    total_donations = Donation.query.count()
+    families_helped = Match.query.filter_by(status='matched').count() + ResourceRequest.query.filter_by(fulfilled=True).count()
+    active_donors = db.session.query(db.func.count(db.func.distinct(Donation.donor_id))).scalar() or 0
+    return render_template(
+        'home.html',
+        total_donations=total_donations,
+        families_helped=families_helped,
+        active_donors=active_donors
+    )
 
 @main.route('/dashboard')
 @login_required
@@ -34,23 +42,35 @@ def dashboard():
             recent_donations=recent_donations,
         )
     elif current_user.role == 'recipient':
-        return render_template('dashboard/recipient_dashboard.html')
+        my_requests = ResourceRequest.query.filter_by(recipient_id=current_user.id).order_by(ResourceRequest.id.desc()).all()
+        total_requests = len(my_requests)
+        fulfilled_requests = len([r for r in my_requests if r.fulfilled])
+        pending_requests = total_requests - fulfilled_requests
+        available_donations = Donation.query.filter_by(matched=False).order_by(Donation.id.desc()).all()
+        return render_template(
+            'dashboard/recipient_dashboard.html',
+            my_requests=my_requests,
+            total_requests=total_requests,
+            fulfilled_requests=fulfilled_requests,
+            pending_requests=pending_requests,
+            available_donations=available_donations,
+            donations=available_donations
+        )
     elif current_user.role == 'admin':
-        return render_template('admin/match_dashboard.html')
-
-
+        return redirect(url_for('main.admin_dashboard'))
     else:
         return render_template('home.html')
-    
+
 @main.route('/donate', methods=['GET', 'POST'])
 @login_required
 def donate():
     if current_user.role != 'donor':
-        flash("you are not a donor. cannnot donate")
+        flash("You are not a donor. Cannot donate.")
         return redirect(url_for('main.dashboard'))
     
     if request.method == 'POST':
         item = request.form.get('item')
+        category = request.form.get('category', 'General')
         quantity = request.form.get('quantity')
         description = request.form.get('description')
         location = request.form.get('location')
@@ -59,6 +79,7 @@ def donate():
         new_donation = Donation(
             donor_id=current_user.id,
             item=item,
+            category=category,
             quantity=quantity,
             description=description,
             location=location
@@ -87,11 +108,11 @@ def donate():
             media = DonationMedia(donation_id=new_donation.id, file_path=f"/static/uploads/{filename}")
             db.session.add(media)
             db.session.commit()
-        flash("Donation submitted! Thanks for danating on UjamaaFlow")
+        flash("Donation submitted! Thanks for donating on UjamaaFlow.")
         return redirect(url_for('main.dashboard'))
     
     return render_template('donor/donate.html')
-    
+
 @main.route('/request-resource', methods=['GET', 'POST'])
 @login_required
 def request_resource():
@@ -101,6 +122,7 @@ def request_resource():
 
     if request.method == 'POST':
         item_needed = request.form.get('item_needed')
+        category = request.form.get('category', 'General')
         quantity = request.form.get('quantity')
         reason = request.form.get('reason')
         location = request.form.get('location')
@@ -108,13 +130,14 @@ def request_resource():
         new_request = ResourceRequest(
             recipient_id=current_user.id,
             item_needed=item_needed,
+            category=category,
             quantity=quantity,
             reason=reason,
             location=location
         )
         db.session.add(new_request)
         db.session.commit()
-        flash("Request submitted!")
+        flash("Resource request submitted successfully!")
         return redirect(url_for('main.dashboard'))
     
     return render_template('recipient/request_form.html')
@@ -126,12 +149,14 @@ def admin_dashboard():
         flash("Admins only.")
         return redirect(url_for('main.dashboard'))
 
-    unmatched_donations = Donation.query.filter_by(matched=False).all()
-    unfulfilled_requests = ResourceRequest.query.filter_by(fulfilled=False).all()
-    total_users = db.session.query(db.func.count('*')).select_from(db.Model.metadata.tables['user']).scalar() if 'user' in db.Model.metadata.tables else 0
+    unmatched_donations = Donation.query.filter_by(matched=False).order_by(Donation.id.desc()).all()
+    unfulfilled_requests = ResourceRequest.query.filter_by(fulfilled=False).order_by(ResourceRequest.id.desc()).all()
+    total_users = User.query.count()
     total_donations = Donation.query.count()
     total_requests = ResourceRequest.query.count()
     total_reports = DonationReport.query.count()
+    pending_approvals = DonationReport.query.count() + Donation.query.filter_by(flagged=True).count()
+    matches = Match.query.order_by(Match.id.desc()).all()
 
     return render_template(
         'admin/match_dashboard.html',
@@ -141,6 +166,8 @@ def admin_dashboard():
         total_donations=total_donations,
         total_requests=total_requests,
         total_reports=total_reports,
+        pending_approvals=pending_approvals,
+        matches=matches
     )
 
 @main.route('/admin/match', methods=['POST'])
@@ -155,7 +182,7 @@ def create_match():
     donation = Donation.query.get(donation_id)
     req = ResourceRequest.query.get(request_id)
     if not donation or not req:
-        flash('Invalid donation or request.')
+        flash('Invalid donation or request selected.')
         return redirect(url_for('main.admin_dashboard'))
 
     match = Match(donation_id=donation.id, request_id=req.id, status='matched')
@@ -182,6 +209,8 @@ def browse():
         donations_query = donations_query.filter(
             (Donation.item.ilike(f"%{query}%")) | (Donation.description.ilike(f"%{query}%"))
         )
+    if category and category.lower() != 'all':
+        donations_query = donations_query.filter(Donation.category.ilike(f"%{category}%"))
     if location:
         donations_query = donations_query.filter(Donation.location.ilike(f"%{location}%"))
 
@@ -275,15 +304,16 @@ def report_donation(donation_id):
 @main.route('/contact')
 def contact():
     return render_template('contact/contact.html')
-# @main.route('/admin')
-# def contact():
-#     return render_template('admin/match_dashboard.html')
+
 @main.route('/resource')
 def resource():
-    return render_template('resources/resource.html')
+    donations = Donation.query.order_by(Donation.id.desc()).all()
+    return render_template('resources/resource.html', donations=donations)
+
 @main.route('/recipient')
+@login_required
 def recipient_dashboard():
-    return render_template('dashboard/recipient_dashboard.html')
+    return redirect(url_for('main.dashboard'))
 
 @main.route('/donations')
 @login_required
@@ -292,4 +322,4 @@ def my_donations():
         flash('Only donors can view their donations.')
         return redirect(url_for('main.dashboard'))
     donor_donations = Donation.query.filter_by(donor_id=current_user.id).order_by(Donation.id.desc()).all()
-    return render_template('donor/my_donations.html', donations=donor_donations)
+    return render_template('donor/my_donations.html', donations=donor_donations)

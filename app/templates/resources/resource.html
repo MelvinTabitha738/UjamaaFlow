@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Resources Received</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donated Resources - UjamaaFlow</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -12,98 +14,167 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
+      background-color: #f8fafc;
       color: #1f2937;
       line-height: 1.6;
     }
 
     .navbar {
-      background-color: #1E3A8A;
+      background-color: #1E40AF;
       color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 40px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 14px 28px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     .logo {
-      font-size: 26px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .logo-accent {
-      color: #F97316;
+    .logo i {
+      color: #EA580C;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 24px;
+      gap: 20px;
     }
 
     .nav-links a {
       color: white;
       text-decoration: none;
       font-weight: 500;
+      font-size: 15px;
       transition: color 0.3s ease;
     }
 
     .nav-links a:hover {
-      color: #FCD34D;
+      color: #FED7AA;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
     .resources-header {
-      background-color: #1E3A8A;
+      background: linear-gradient(135deg, #1E40AF 0%, #0891B2 100%);
       color: white;
-      padding: 10px 20px;
+      padding: 40px 20px;
       text-align: center;
     }
 
     .resources-header h1 {
-      font-size: 36px;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
       margin-bottom: 10px;
+      font-weight: 800;
     }
 
     .resources-header p {
-      font-size: 18px;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
       color: #DBEAFE;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
-    .resources-table {
-      padding: 40px 20px;
+    .resources-container {
+      padding: 30px 16px;
       max-width: 1200px;
       margin: auto;
     }
 
-    table {
+    /* CARD SCALING FOR SMALL SCREENS */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .resource-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .resource-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1E40AF;
+      margin-bottom: 6px;
+    }
+
+    .resource-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .badge-matched { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-available { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+    .badge-flagged { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+    .resource-meta {
+      font-size: 0.875rem;
+      color: #4B5563;
+      margin-bottom: 6px;
+    }
+
+    .resource-meta i {
+      color: #EA580C;
+      width: 18px;
+    }
+
+    .resource-image {
       width: 100%;
-      border-collapse: collapse;
-      background-color: white;
+      height: 140px;
+      object-fit: cover;
       border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      margin-top: 10px;
     }
 
-    th, td {
-      padding: 16px 18px;
-      text-align: left;
-      font-size: 16px;
-      border-bottom: 1px solid #E5E7EB;
-    }
-
-    th {
-      background-color: #EFF6FF;
-      color: #2563EB;
-    }
-
-    tr:nth-child(even) {
-      background-color: #F9FAFB;
-    }
-
-    tr:hover {
-      background-color: #F3F4F6;
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      background: white;
+      border-radius: 12px;
+      color: #6B7280;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .site-footer {
@@ -111,30 +182,54 @@
       color: #9CA3AF;
       text-align: center;
       padding: 24px;
-      font-size: 15px;
+      font-size: 14px;
       margin-top: 60px;
     }
 
     @media (max-width: 768px) {
-      .navbar {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #1E40AF;
         flex-direction: column;
         align-items: flex-start;
         padding: 20px;
+        gap: 12px;
+        display: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      }
+
+      .nav-menu.active {
+        display: flex;
       }
 
       .nav-links {
         flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 12px;
+        width: 100%;
       }
 
-      .resources-header h1 {
-        font-size: 28px;
+      .resources-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
       }
 
-      th, td {
-        font-size: 14px;
+      .resource-card {
         padding: 12px;
+      }
+
+      .resource-title {
+        font-size: 0.98rem;
+      }
+
+      .resource-meta {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -142,77 +237,77 @@
 <body>
 
   <nav class="navbar">
-    <div class="logo">Ujamaaflow <span class="logo-accent">.</span></div>
-    <ul class="nav-links">
-      <li><a href="{{ url_for('main.admin_dashboard') }}">Admin</a></li>
-      <li><a href="{{ url_for('main.resource') }}">Resources</a></li>
-      <li><a href="{{ url_for('main.dashboard') }}">Receivers</a></li>
-      <li><a href="{{ url_for('main.contact') }}">Contact Us</a></li>
-    </ul>
+    <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li><a href="{{ url_for('main.resource') }}">All Resources</a></li>
+        <li><a href="{{ url_for('main.contact') }}">Contact Us</a></li>
+        {% if current_user.is_authenticated %}
+          <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
   </nav>
 
   <header class="resources-header">
-    <h1>Donated Resources</h1>
-    <p>A transparent record of all types of donations we've received to support our cause.</p>
+    <h1>Donated Resources Community Log</h1>
+    <p>A real-time transparent log of resources donated by compassionate individuals across our community.</p>
   </header>
 
-  <section class="resources-table">
-    <table>
-      <thead>
-        <tr>
-          <th>Resource</th>
-          <th>Type</th>
-          <th>Donor</th>
-          <th>Quantity/Amount</th>
-          <th>Date</th>
-          <th>Notes</th>
-          <th>Tracking</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Winter Jackets</td>
-          <td>Clothing</td>
-          <td>Mary K.</td>
-          <td>15</td>
-          <td>2025-07-18</td>
-          <td>To be distributed in Nakuru</td>
-          <td style="color: #DC2626;">Rejected</td>
-        </tr>
-        <tr>
-          <td>Ksh 20,000</td>
-          <td>Money</td>
-          <td>Anonymous</td>
-          <td>20,000</td>
-          <td>2025-07-15</td>
-          <td>For medical emergency</td>
-          <td style="color: #F59E0B;">Pending</td>
-        </tr>
-        <tr>
-          <td>Blood Donation</td>
-          <td>Medical</td>
-          <td>County Hospital</td>
-          <td>10 Units</td>
-          <td>2025-07-10</td>
-          <td>For emergency surgery</td>
-          <td style="color: #16A34A;">Approved</td>
-        </tr>
-        <tr>
-          <td>Books & Stationery</td>
-          <td>Education</td>
-          <td>Bright Future Org</td>
-          <td>Boxes (3)</td>
-          <td>2025-07-09</td>
-          <td>Targeted to rural schools</td>
-          <td style="color: #F59E0B;">Pending</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <main class="resources-container">
+    {% if donations and donations|length > 0 %}
+      <div class="resources-grid">
+        {% for d in donations %}
+          <div class="resource-card">
+            <div>
+              <span class="resource-badge {{ 'badge-matched' if d.matched else ('badge-flagged' if d.flagged else 'badge-available') }}">
+                {{ 'Matched / Fulfilled' if d.matched else ('Flagged' if d.flagged else 'Available') }}
+              </span>
+              <div class="resource-title">{{ d.item }}</div>
+              <div class="resource-meta"><i class="fas fa-tag"></i> <strong>Category:</strong> {{ d.category or 'General' }}</div>
+              <div class="resource-meta"><i class="fas fa-boxes"></i> <strong>Quantity:</strong> {{ d.quantity or 'N/A' }}</div>
+              <div class="resource-meta"><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> {{ d.location or 'N/A' }}</div>
+              {% if d.donor %}
+                <div class="resource-meta"><i class="fas fa-user-heart"></i> <strong>Donor:</strong> {{ d.donor.username }}</div>
+              {% endif %}
+              {% if d.description %}
+                <div class="resource-meta" style="margin-top: 6px; font-style: italic;">"{{ d.description }}"</div>
+              {% endif %}
+            </div>
+            {% if d.media and d.media|length > 0 %}
+              <img src="{{ d.media[0].file_path }}" alt="Donation Image" class="resource-image" />
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-hand-holding-heart" style="font-size: 3rem; color: #2563EB; margin-bottom: 12px;"></i>
+        <h3>No Donations Recorded Yet</h3>
+        <p>Be the first generous donor to share resources with families in need!</p>
+        <a href="{{ url_for('main.donate') }}" style="display: inline-block; margin-top: 16px; background-color: #EA580C; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">Donate Now</a>
+      </div>
+    {% endif %}
+  </main>
 
   <footer class="site-footer">
-    <p>&copy; 2025 YourOrganization. All rights reserved.</p>
+    <p>&copy; 2026 UjamaaFlow. All rights reserved. Building stronger communities together.</p>
   </footer>
 
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
+    }
+  </script>
 </body>
 </html>

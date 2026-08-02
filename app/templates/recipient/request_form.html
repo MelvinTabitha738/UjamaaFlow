@@ -1,100 +1,96 @@
-<h2 class="page-title">Request a Resource</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request a Resource - UjamaaFlow</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; color: #1f2937; line-height: 1.6; }
+    .navbar {
+      background-color: #1E40AF;
+      color: white;
+      display: flex;
+      padding: 14px 28px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo { font-size: 24px; font-weight: bold; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .logo i { color: #EA580C; }
+    .nav-links { list-style: none; display: flex; gap: 20px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
+    .nav-links a:hover { color: #FED7AA; }
+    .container { max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    .page-title { font-size: 28px; font-weight: bold; text-align: center; color: #1E40AF; margin-bottom: 20px; }
+    .request-form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.06); }
+    .form-group { display: flex; flex-direction: column; margin-bottom: 18px; }
+    .form-group label { font-weight: 600; margin-bottom: 6px; color: #374151; }
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 12px 14px; font-size: 15px; border-radius: 8px; border: 1px solid #cbd5e1; outline-color: #60a5fa; background: #fff;
+    }
+    .form-group textarea { resize: vertical; }
+    .submit-btn {
+      background-color: #EA580C; color: white; padding: 14px 20px; font-size: 16px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; width: 100%; transition: background 0.3s ease;
+    }
+    .submit-btn:hover { background-color: #C2410C; }
+    .back-link { display: inline-block; text-align: center; margin-top: 20px; color: #1E40AF; text-decoration: none; font-weight: 500; width: 100%; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{{ url_for('main.dashboard') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
+      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+    </ul>
+  </nav>
 
-<form method="POST" action="" class="request-form">
-  <div class="form-group">
-    <label>Item Needed</label>
-    <input type="text" name="item_needed" required>
+  <div class="container">
+    <h2 class="page-title">Request a Resource</h2>
+
+    <form method="POST" action="" class="request-form">
+      <div class="form-group">
+        <label for="item_needed">Item Needed <span style="color: #DC2626;">*</span></label>
+        <input type="text" id="item_needed" name="item_needed" required placeholder="e.g. Rice, Warm Blanket, Textbooks">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="Food">Food & Groceries</option>
+          <option value="Clothing">Clothing & Shoes</option>
+          <option value="Books">Books & Education</option>
+          <option value="Hygiene">Hygiene & Health</option>
+          <option value="Medical">Medical Assistance</option>
+          <option value="Electronics">Electronics & Tech</option>
+          <option value="Household">Household Items</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity / Scale</label>
+        <input type="text" id="quantity" name="quantity" placeholder="e.g., 2 bags, 1 unit, 5 books">
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason / Circumstance</label>
+        <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe why this resource is needed..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location <span style="color: #DC2626;">*</span></label>
+        <input type="text" id="location" name="location" required placeholder="e.g. Kibera, Nairobi or Nakuru Town">
+      </div>
+
+      <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Submit Request</button>
+    </form>
+
+    <a href="{{ url_for('main.dashboard') }}" class="back-link">← Back to Dashboard</a>
   </div>
-
-  <div class="form-group">
-    <label>Quantity</label>
-    <input type="text" name="quantity">
-  </div>
-
-  <div class="form-group">
-    <label>Reason</label>
-    <textarea name="reason" rows="4"></textarea>
-  </div>
-
-  <div class="form-group">
-    <label>Location</label>
-    <input type="text" name="location" required>
-  </div>
-
-  <button type="submit" class="submit-btn">Submit Request</button>
-</form>
-
-<a href="{{ url_for('main.dashboard') }}" class="back-link">← Back to Dashboard</a>
-
-<style>
-  .page-title {
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    color: #1E40AF;
-    margin-bottom: 20px;
-  }
-
-  .request-form {
-    max-width: 500px;
-    margin: 0 auto;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-  }
-
-  .form-group label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #374151;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    padding: 12px 14px;
-    font-size: 15px;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    outline-color: #60a5fa;
-  }
-
-  .form-group textarea {
-    resize: vertical;
-  }
-
-  .submit-btn {
-    background-color: #1E40AF;
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.3s ease;
-  }
-
-  .submit-btn:hover {
-    background-color: #3B82F6;
-  }
-
-  .back-link {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    color: #1E40AF;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .back-link:hover {
-    text-decoration: underline;
-  }
-</style>
+</body>
+</html>

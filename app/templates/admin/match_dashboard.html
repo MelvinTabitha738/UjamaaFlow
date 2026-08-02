@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard - UjamaaFlow</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #FAFAFA;
       color: #111827;
+      line-height: 1.6;
     }
 
     /* Navbar */
@@ -18,155 +20,234 @@
       color: white;
       display: flex;
       justify-content: space-between;
-      padding: 16px 32px;
+      padding: 14px 28px;
       align-items: center;
-      flex-wrap: wrap;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
     }
+
     .logo {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: bold;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .logo-accent {
-      color: #EA580C;
-    }
+    
+    .logo i { color: #EA580C; }
+    .logo-accent { color: #EA580C; }
+
+    .nav-menu { display: flex; align-items: center; gap: 20px; }
     .nav-links {
       list-style: none;
       display: flex;
       gap: 20px;
-      flex-wrap: wrap;
     }
+
     .nav-links a {
       color: white;
       text-decoration: none;
       font-weight: 500;
+      font-size: 15px;
+      transition: color 0.3s ease;
     }
-    .nav-links a:hover {
-      color: #FED7AA;
-    }
+
+    .nav-links a:hover { color: #FED7AA; }
+    .mobile-menu-btn { display: none; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
     /* Header */
     .admin-header {
-      background-color: #1E40AF;
+      background: linear-gradient(135deg, #1E40AF 0%, #0891B2 100%);
       color: #FFFFFF;
       text-align: center;
-      padding: 20px 10px;
-    }
-    .admin-header h1 {
-      font-size: 34px;
-      margin-bottom: 5px;
-    }
-    .admin-header p {
-      font-size: 16px;
-      color: #FED7AA;
-      margin: 4px 0;
-    }
-    .admin-header a {
-      color: #FED7AA;
-      font-weight: bold;
-      text-decoration: none;
+      padding: 30px 20px;
     }
 
-    /* Dashboard Stats */
+    .admin-header h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 6px; font-weight: 800; }
+    .admin-header p { font-size: clamp(0.9rem, 2vw, 1.1rem); color: #FED7AA; }
+    .admin-header a { color: #FED7AA; font-weight: bold; text-decoration: underline; }
+
+    .container { max-width: 1250px; margin: 24px auto; padding: 0 16px; }
+
+    /* METRICS CARDS SCALING FOR SMALL SCREENS */
     .dashboard-stats {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 30px auto;
-      max-width: 1200px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin-bottom: 30px;
     }
+
     .stat-card {
       background-color: #FFFFFF;
-      border-radius: 10px;
-      padding: 20px;
-      flex: 1 1 250px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      padding: 16px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      border: 1px solid #E5E7EB;
       text-align: center;
     }
+
     .stat-card h3 {
-      margin-bottom: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
       color: #2563EB;
+      text-transform: uppercase;
+      font-weight: 700;
     }
+
     .stat-card p {
-      font-size: 26px;
-      font-weight: bold;
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: #111827;
       margin: 0;
     }
+
     .badge {
       background-color: #EA580C;
       color: white;
       padding: 2px 8px;
-      font-size: 12px;
+      font-size: 11px;
       border-radius: 6px;
       margin-left: 5px;
+      vertical-align: middle;
     }
 
-    /* Search & Filter */
-    .search-filter {
-      max-width: 1200px;
-      margin: 20px auto;
+    /* MATCHING SECTION */
+    .matching-section {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #E5E7EB;
+      margin-bottom: 30px;
+    }
+
+    .matching-section h2 {
+      font-size: 1.3rem;
+      color: #1E40AF;
+      margin-bottom: 16px;
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      padding: 0 10px;
-    }
-    .search-filter input,
-    .search-filter select {
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #D1D5DB;
-      border-radius: 6px;
-      flex: 1;
-    }
-    .search-btn {
-      background-color: #2563EB;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .search-btn:hover {
-      background-color: #1D4ED8;
+      align-items: center;
+      gap: 8px;
     }
 
-    /* Admin Cards */
+    .matching-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .matching-column {
+      background: #F8FAFC;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .matching-column h3 {
+      font-size: 1rem;
+      color: #334155;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #CBD5E1;
+      padding-bottom: 6px;
+    }
+
+    .matching-list {
+      max-height: 220px;
+      overflow-y: auto;
+      list-style: none;
+    }
+
+    .matching-list li {
+      padding: 8px 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border: 1px solid #E2E8F0;
+      font-size: 0.88rem;
+    }
+
+    .match-form {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #EFF6FF;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid #BFDBFE;
+      align-items: center;
+    }
+
+    .match-form select {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #93C5FD;
+      font-size: 0.95rem;
+    }
+
+    .btn-match {
+      background-color: #EA580C;
+      color: white;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-match:hover { background-color: #C2410C; }
+
+    /* ADMIN MANAGEMENT CARDS SCALING FOR SMALL SCREENS */
     .admin-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
     }
+
     .admin-card {
       background-color: #FFFFFF;
       border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      border: 1px solid #E5E7EB;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
+
     .admin-card h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
       color: #2563EB;
+      font-weight: 700;
     }
+
     .admin-card p {
       flex-grow: 1;
       color: #6B7280;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
     }
-    .btn-primary,
-    .btn-secondary,
-    .btn-warning {
-      margin-top: 15px;
+
+    .btn-primary, .btn-secondary, .btn-warning {
+      display: inline-block;
+      text-align: center;
       padding: 10px 16px;
-      font-size: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
     }
+
     .btn-primary { background-color: #EA580C; color: white; }
     .btn-primary:hover { background-color: #C2410C; }
     .btn-secondary { background-color: #2563EB; color: white; }
@@ -174,13 +255,53 @@
     .btn-warning { background-color: #D97706; color: white; }
     .btn-warning:hover { background-color: #B45309; }
 
-    /* Footer */
+    .warning-card {
+      border-left: 4px solid #D97706;
+      background-color: #FFFBEB;
+    }
+
     .site-footer {
       background-color: #374151;
       color: #D1D5DB;
       text-align: center;
       padding: 20px;
-      margin-top: 60px;
+      font-size: 14px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: block; }
+      .nav-menu {
+        position: absolute;
+        top: 100%; left: 0; width: 100%;
+        background: #1E40AF;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 20px;
+        gap: 12px;
+        display: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      }
+      .nav-menu.active { display: flex; }
+      .nav-links { flex-direction: column; gap: 10px; width: 100%; }
+
+      .dashboard-stats {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+      }
+
+      .matching-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-container {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .admin-card { padding: 14px; }
+      .admin-card h2 { font-size: 0.98rem; }
+      .admin-card p { font-size: 0.82rem; }
     }
   </style>
 </head>
@@ -188,120 +309,147 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="logo">UjamaaFlow <span class="logo-accent">Admin</span></div>
-    <ul class="nav-links">
-      <li><a href="{{ url_for('main.admin_dashboard') }}">Overview</a></li>
-      <li><a href="{{ url_for('main.admin_donations') }}">Donations</a></li>
-      <li><a href="{{ url_for('main.admin_requests') }}">Requests</a></li>
-      <li><a href="{{ url_for('main.admin_reports') }}">Reports</a></li>
-    </ul>
+    <a href="{{ url_for('main.admin_dashboard') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow <span class="logo-accent">Admin</span></a>
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.admin_dashboard') }}">Overview</a></li>
+        <li><a href="{{ url_for('main.admin_donations') }}">Donations</a></li>
+        <li><a href="{{ url_for('main.admin_requests') }}">Requests</a></li>
+        <li><a href="{{ url_for('main.admin_reports') }}">Reports</a></li>
+        <li><a href="{{ url_for('main.admin_users') }}">Users</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      </ul>
+    </div>
   </nav>
 
   <!-- Header -->
   <header class="admin-header">
-    <h1>Admin Dashboard</h1>
-    <p>Manage users, donations, and content from one place.</p>
-    <p>Welcome, {{ current_user.username }}! | <a href="{{ url_for('auth.logout') }}">Logout</a></p>
+    <h1>Admin Command Center</h1>
+    <p>Manage users, donations, resource requests, and system matches.</p>
+    <p style="margin-top: 4px; font-size: 0.9rem;">LoggedIn as <strong>{{ current_user.username }}</strong></p>
   </header>
 
-  <!-- Stats -->
-  <section class="dashboard-stats">
-    <div class="stat-card">
-      <h3>Total Donations</h3>
-      <p>{{ total_donations }}</p>
-    </div>
-    <div class="stat-card">
-      <h3>Total Requests</h3>
-      <p>{{ total_requests }}</p>
-    </div>
-    <div class="stat-card">
-      <h3>Reports <span class="badge">{{ total_reports }}</span></h3>
-      <p>{{ total_reports }}</p>
-    </div>
-  </section>
-  <section style="max-width: 1200px; margin: auto; padding: 20px;">
-      <h2>Donations</h2>
-      {% if donations %}
-        <ul>
+  <main class="container">
+
+    <!-- Live Database Stats -->
+    <section class="dashboard-stats">
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Donations</h3>
+        <p style="color: #2563EB;">{{ total_donations }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Requests</h3>
+        <p style="color: #EA580C;">{{ total_requests }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Active Reports</h3>
+        <p style="color: #DC2626;">{{ total_reports }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Matches Made</h3>
+        <p style="color: #059669;">{{ matches|length }}</p>
+      </div>
+    </section>
+
+    <!-- Match Creation Hub -->
+    <section class="matching-section">
+      <h2><i class="fas fa-handshake"></i> Automated & Manual Resource Matcher</h2>
+      <p style="font-size: 0.9rem; color: #6B7280; margin-bottom: 16px;">Match available donations with unfulfilled requests to connect donors and recipients directly.</p>
+      
+      <div class="matching-grid">
+        <div class="matching-column">
+          <h3>Unmatched Donations ({{ donations|length }})</h3>
+          {% if donations and donations|length > 0 %}
+            <ul class="matching-list">
+              {% for d in donations %}
+                <li><strong>#{{ d.id }} {{ d.item }}</strong> ({{ d.category or 'General' }}) - {{ d.location or 'No loc' }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p style="font-size: 0.85rem; color: #6B7280;">No unmatched donations available.</p>
+          {% endif %}
+        </div>
+
+        <div class="matching-column">
+          <h3>Unfulfilled Requests ({{ requests|length }})</h3>
+          {% if requests and requests|length > 0 %}
+            <ul class="matching-list">
+              {% for r in requests %}
+                <li><strong>#{{ r.id }} {{ r.item_needed }}</strong> ({{ r.category or 'General' }}) - {{ r.location or 'No loc' }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p style="font-size: 0.85rem; color: #6B7280;">No unfulfilled requests pending.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <form method="POST" action="{{ url_for('main.create_match') }}" class="match-form">
+        <select name="donation_id" required>
+          <option value="">Select Unmatched Donation...</option>
           {% for d in donations %}
-            <li>{{ d.item }} - {{ d.category }} - {{ d.location }}</li>
+            <option value="{{ d.id }}">#{{ d.id }} {{ d.item }} ({{ d.category }}) - {{ d.location }}</option>
           {% endfor %}
-        </ul>
-      {% else %}
-        <p>No donations found.</p>
-      {% endif %}
+        </select>
 
-      <h2>Requests</h2>
-      {% if requests %}
-        <ul>
+        <select name="request_id" required>
+          <option value="">Select Unfulfilled Request...</option>
           {% for r in requests %}
-            <li>{{ r.item_needed }} - {{ r.category }} - {{ r.location }}</li>
+            <option value="{{ r.id }}">#{{ r.id }} {{ r.item_needed }} ({{ r.category }}) - {{ r.location }}</option>
           {% endfor %}
-        </ul>
-      {% else %}
-        <p>No requests found.</p>
-      {% endif %}
-  </section>
+        </select>
 
-
-  <!-- Search & Filter -->
-  <div class="search-filter">
-  <form method="GET" action="{{ url_for('main.dashboard') }}" style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
-    <input type="text" name="search" placeholder="Search donations or requests..." value="{{ search }}">
-    <select name="category">
-      <option value="">Filter by category</option>
-      <option value="food" {% if category == 'food' %}selected{% endif %}>Food</option>
-      <option value="clothes" {% if category == 'clothes' %}selected{% endif %}>Clothes</option>
-      <option value="medical" {% if category == 'medical' %}selected{% endif %}>Medical</option>
-    </select>
-    <button type="submit" class="search-btn">Search</button>
-  </form>
-</div>
-
-
-  <!-- Action Cards -->
-  <main class="admin-container">
-    <section class="admin-card warning-card">
-      <h2>Pending Approvals <span class="badge">4</span></h2>
-      <p>You have requests waiting for review.</p>
-      <button class="btn-warning">Review Now</button>
+        <button type="submit" class="btn-match"><i class="fas fa-link"></i> Confirm Match</button>
+      </form>
     </section>
 
-    <section class="admin-card">
-      <h2>All Listings</h2>
-      <p>Manage all active and inactive listings.</p>
-      <button class="btn-primary">Go to Listings</button>
-    </section>
+    <!-- Action Cards Grid -->
+    <div class="admin-container">
+      <section class="admin-card warning-card">
+        <h2>Flagged & Reports <span class="badge">{{ pending_approvals }}</span></h2>
+        <p>Review safety reports and flagged donation listings.</p>
+        <a href="{{ url_for('main.admin_reports') }}" class="btn-warning">Manage Reports</a>
+      </section>
 
-    <section class="admin-card">
-      <h2>Reports</h2>
-      <p>View and handle inappropriate or expired donations.</p>
-      <button class="btn-primary">Manage Reports</button>
-    </section>
+      <section class="admin-card">
+        <h2>All Donations ({{ total_donations }})</h2>
+        <p>View, toggle matching status, or remove donation listings.</p>
+        <a href="{{ url_for('main.admin_donations') }}" class="btn-primary">View Donations</a>
+      </section>
 
-    <section class="admin-card">
-      <h2>All Users</h2>
-      <p>Find and manage all user accounts.</p>
-      <button class="btn-primary">Go to Users</button>
-    </section>
+      <section class="admin-card">
+        <h2>All Requests ({{ total_requests }})</h2>
+        <p>Manage recipient requests and update fulfillment statuses.</p>
+        <a href="{{ url_for('main.admin_requests') }}" class="btn-primary">View Requests</a>
+      </section>
 
-    <section class="admin-card">
-      <h2>Match Donations</h2>
-      <p>Match donations to unfulfilled requests.</p>
-      <a class="btn-secondary" href="{{ url_for('main.create_match') }}">Start Matching</a>
-    </section>
+      <section class="admin-card">
+        <h2>User Accounts ({{ total_users }})</h2>
+        <p>Inspect registered donors, recipients, and administrator accounts.</p>
+        <a href="{{ url_for('main.admin_users') }}" class="btn-secondary">Manage Users</a>
+      </section>
+    </div>
 
-    <section class="admin-card">
-      <h2>Receivers</h2>
-      <p>View and approve new receiver applications.</p>
-      <button class="btn-primary">Go to Receivers</button>
-    </section>
   </main>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>&copy; 2025 YourOrganization. All rights reserved.</p>
+    <p>&copy; 2026 UjamaaFlow Admin Control Panel. All rights reserved.</p>
   </footer>
 
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
+    }
+  </script>
 </body>
 </html>

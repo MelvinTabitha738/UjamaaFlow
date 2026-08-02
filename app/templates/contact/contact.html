@@ -2,195 +2,501 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact Us</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - UjamaaFlow</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-blue: #2563EB;
+      --secondary-teal: #0891B2;
+      --accent-orange: #EA580C;
+      --navbar-bg: #1E40AF;
+      --gray-50: #FAFAFA;
+      --gray-100: #F8FAFC;
+      --gray-200: #E5E7EB;
+      --gray-600: #6B7280;
+      --gray-800: #111827;
+      --gray-900: #374151;
+      --white: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    /* NAVIGATION BAR */
+    .navbar {
+      background: rgba(30, 64, 175, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo i {
+      color: var(--accent-orange);
+      margin-right: 0.5rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      background: rgba(234, 88, 12, 0.2);
+    }
+
+    .nav-auth {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.75rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-orange), #F97316);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+    }
+
+    .btn-outline:hover {
+      background: var(--white);
+      color: var(--primary-blue);
+    }
+
+    /* HERO HEADER */
+    .contact-hero {
+      background: linear-gradient(135deg, var(--navbar-bg) 0%, var(--secondary-teal) 100%);
+      color: white;
+      text-align: center;
+      padding: 8rem 1.5rem 4rem;
+      position: relative;
+    }
+
+    .contact-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: #FED7AA;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* CONTAINER & CARDS */
+    .contact-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: -3rem auto 4rem;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .contact-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
+      border: 1px solid var(--gray-200);
+    }
+
+    .contact-card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--gray-800);
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.875rem 1.15rem;
+      font-size: 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      background-color: var(--gray-50);
+      color: var(--gray-800);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary-blue);
+      background-color: var(--white);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    /* INFO ITEMS */
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .info-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: #EFF6FF;
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .info-details h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.25rem;
+    }
+
+    .info-details p {
+      color: var(--gray-600);
+      font-size: 0.95rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .social-btn:hover {
+      background: var(--accent-orange);
+      color: var(--white);
+      transform: translateY(-3px);
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background-color: var(--gray-900);
+      color: var(--gray-400);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: 4rem;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(30, 64, 175, 0.98);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.5rem 2rem;
+        gap: 1rem;
+        display: none;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-auth {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <style>
 
-.contact-hero {
-  background-color: #1E40AF;
-  color: white;
-  text-align: center;
-  padding: 1px 20px;
-}
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('main.home') }}" class="logo">
+        <i class="fas fa-heart"></i>
+        UjamaaFlow
+      </a>
 
-.contact-hero h1 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
 
-.contact-hero p {
-  font-size: 18px;
-  color: #FED7AA;
-}
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-links">
+          <li><a href="{{ url_for('main.home') }}">Home</a></li>
+          <li><a href="{{ url_for('main.resource') }}">Resources</a></li>
+          <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+        </ul>
 
+        <div class="nav-auth">
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-primary">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Register
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
 
-.contact-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-
-.contact-form, .contact-info {
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-.contact-form form {
-  display: flex;
-  flex-direction: column;
-}
-
-.contact-form label {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.contact-form input,
-.contact-form textarea {
-  margin-top: 6px;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  background-color: #FFFFFF;
-  color: #111827;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: #2563EB;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-}
-
-
-.btn-primary {
-  margin-top: 20px;
-  background-color: #EA580C;
-  color: white;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #C2410C;
-}
-
-
-.contact-info h2 {
-  margin-bottom: 10px;
-  color: #2563EB;
-}
-
-
-.navbar {
-  background-color: #1E40AF;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 32px;
-  align-items: center;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.logo-accent {
-  color: #EA580C;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.nav-links a:hover {
-  color: #FED7AA;
-}
-
-.site-footer {
-  background-color: #374151;
-  color: #D1D5DB;
-  text-align: center;
-  padding: 20px;
-  margin-top: 60px;
-}
-  body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #FAFAFA;
-  color: #111827;
-}
-
-
-    </style>
-
-
-
-
-<nav class="navbar">
-  <div class="logo">UjamaaFlow <span class="logo-accent"></span></div>
-  <ul class="nav-links">
-    <li><a href="{{ url_for('main.admin_dashboard') }}">Admin</a></li>
-    <li><a href="{{ url_for('main.resource') }}">Resources</a></li>
-    <li><a href="{{ url_for('main.dashboard') }}">Receivers</a></li>
-    <li><a href="{{ url_for('main.contact') }}">Contact Us</a></li>
-  </ul>
-</nav>
-
+  <!-- HERO HEADER -->
   <header class="contact-hero">
-    <h1>Contact Us</h1>
-    <p>We’d love to hear from you. Reach out with questions, feedback, or support inquiries.</p>
+    <h1>Get in Touch</h1>
+    <p>We'd love to hear from you. Reach out with questions, suggestions, or support inquiries.</p>
   </header>
 
+  <!-- MAIN CONTACT CONTENT -->
   <main class="contact-container">
-    <section class="contact-form">
-      <form>
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" required placeholder="Your full name">
+    <!-- Contact Form -->
+    <section class="contact-card contact-form">
+      <h2><i class="fas fa-paper-plane"></i> Send Us a Message</h2>
+      <form action="{{ url_for('main.contact') }}" method="GET">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="Enter your full name">
+        </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="you@example.com">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="name@example.com">
+        </div>
 
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="How can we help?">
+        </div>
 
-        <button type="submit" class="btn-primary">Send Message</button>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Type your message here..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
       </form>
     </section>
 
-    <section class="contact-info">
-      <h2>Reach Us</h2>
-      <p><strong>Email:</strong> support@yourdomain.org</p>
-      <p><strong>Phone:</strong> +254 712 345 678</p>
-      <p><strong>Location:</strong> Nairobi, Kenya</p>
+    <!-- Contact Info -->
+    <section class="contact-card contact-info">
+      <h2><i class="fas fa-headset"></i> Contact Information</h2>
+      <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Our team is here to assist you. Connect with us through any of these channels.</p>
+
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-envelope"></i></div>
+          <div class="info-details">
+            <h4>Email Us</h4>
+            <p>support@ujamaaflow.org</p>
+            <p>info@ujamaaflow.org</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="info-details">
+            <h4>Call Us</h4>
+            <p>+254 712 345 678</p>
+            <p>+254 798 765 432</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="info-details">
+            <h4>Our Location</h4>
+            <p>UjamaaFlow Center, Nairobi, Kenya</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-clock"></i></div>
+          <div class="info-details">
+            <h4>Working Hours</h4>
+            <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+            <p>Saturday: 9:00 AM - 2:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="social-links">
+        <a href="#" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
     </section>
   </main>
-<footer class="site-footer">
-  <p>&copy; 2025 YourOrganization. All rights reserved.</p>
-</footer>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>&copy; 2026 UjamaaFlow. All rights reserved. Building stronger communities together.</p>
+  </footer>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+      });
+      document.addEventListener('click', function(e) {
+        if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
