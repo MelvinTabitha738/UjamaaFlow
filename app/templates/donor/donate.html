@@ -3,571 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartShare - Submit a Donation</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>UjamaaFlow — Submit a Donation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --blue:#2563EB; --blue-dark:#1D4ED8; --blue-deep:#1E40AF;
+            --orange:#EA580C; --orange-dark:#C2410C; --teal:#0891B2;
+            --gray-50:#FAFAFA; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
+            --gray-400:#9CA3AF; --gray-600:#6B7280; --gray-800:#111827;
+            --white:#FFFFFF; --red:#DC2626; --green:#059669;
         }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #FAFAFA;
-            color: #111827;
-            line-height: 1.6;
-        }
+        /* NAVBAR */
+        .navbar{background:rgba(30,64,175,.96);backdrop-filter:blur(20px);padding:.9rem 0;position:fixed;top:0;width:100%;z-index:1000;border-bottom:1px solid rgba(255,255,255,.1);}
+        .nav-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;}
+        .logo{display:flex;align-items:center;gap:.4rem;font-size:1.5rem;font-weight:800;color:#fff;text-decoration:none;}
+        .logo i{color:var(--orange);}
+        .nav-links{display:flex;list-style:none;gap:.5rem;align-items:center;}
+        .nav-links a{color:#fff;text-decoration:none;padding:.5rem .9rem;border-radius:20px;font-weight:500;font-size:.9rem;transition:all .3s;}
+        .nav-links a:hover{background:rgba(234,88,12,.2);}
+        .mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;}
 
-        .navbar {
-            background: rgba(30, 64, 175, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1rem 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .nav-bar1 {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            
-        }
+        /* LAYOUT */
+        .main{max-width:860px;margin:0 auto;padding:90px 20px 40px;}
+        .hero-bar{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;padding:32px;border-radius:20px;margin-bottom:28px;text-align:center;}
+        .hero-bar h2{font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;margin-bottom:6px;}
+        .hero-bar p{opacity:.9;font-size:.95rem;}
 
-        .logo {
-            font-size: 26px;
-            font-weight: bold;
-            margin-left:60px;
-            color:#fff;
-        }
+        /* FLASH */
+        .flash-zone{margin-bottom:16px;}
+        .flash{padding:12px 16px;border-radius:12px;font-size:.9rem;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:10px;animation:fadeSlide .4s ease;}
+        @keyframes fadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .flash.error{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;}
+        .flash.success{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
+        .flash.info{background:#EFF6FF;color:var(--blue);border:1px solid #BFDBFE;}
 
-        .logo-accent {
-            color: #F97316;
-        }
+        /* ITEM BLOCK */
+        .item-block{background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,.05);border:1px solid var(--gray-200);margin-bottom:20px;position:relative;animation:fadeSlide .4s ease;}
+        .item-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--gray-100);}
+        .item-num{font-size:1rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px;}
+        .remove-btn{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;padding:6px 12px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:6px;}
+        .remove-btn:hover{background:#DC2626;color:#fff;}
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 24px;
-            margin-right: 60px;
-            font-size: 18px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            padding:12px;
-            color: white;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #FCD34D;
-            text-decoration: underline;
-        }
-
-        .main-container {
-            max-width: 800px;
-            margin-top: 80px;
-            margin-left: auto;
-            margin-right: auto;
-            align-items:center;
-            padding: 30px 20px;
-        }
-        
-
-        .header-section {
-            background: linear-gradient(135deg, #2563EB 0%, #0891B2 100%);
-            color: #FFFFFF;
-            padding: 40px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="header-pattern" patternUnits="userSpaceOnUse" width="25" height="25"><circle cx="12.5" cy="12.5" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23header-pattern)"/></svg>');
-            opacity: 0.6;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-content h2 {
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .header-content p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .form-card {
-            background: #FFFFFF;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
-            font-size: 1em;
-        }
-
+        /* FORM ELEMENTS */
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+        .form-group{margin-bottom:18px;}
+        .form-group label{display:block;font-weight:600;color:var(--gray-800);font-size:.88rem;margin-bottom:7px;}
+        .req{color:var(--red);}
         .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #E5E7EB;
-            border-radius: 12px;
-            font-size: 1em;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background: #FAFAFA;
+        .form-group select,
+        .form-group textarea{
+            width:100%;padding:12px 14px;border:2px solid var(--gray-200);border-radius:12px;
+            font-size:.95rem;font-family:inherit;background:var(--gray-50);color:var(--gray-800);
+            transition:all .3s;
         }
-
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #2563EB;
-            background: #FFFFFF;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .form-group select:focus,
+        .form-group textarea:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+        .form-group textarea{min-height:90px;resize:vertical;}
+
+        /* PHONE FIELD */
+        .phone-field{display:none;}
+        .phone-field.show{display:block;}
+        .phone-hint{font-size:.78rem;color:var(--gray-600);margin-top:4px;}
+        .phone-error{color:var(--red);font-size:.8rem;display:none;margin-top:4px;}
+        .phone-error.show{display:block;}
+
+        /* FILE UPLOAD */
+        .upload-zone{border:2px dashed var(--gray-200);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .3s;background:var(--gray-50);}
+        .upload-zone:hover,.upload-zone.over{border-color:var(--blue);background:#EFF6FF;}
+        .upload-zone i{font-size:2.2rem;color:var(--gray-400);margin-bottom:10px;}
+        .upload-zone p{font-size:.9rem;color:var(--gray-600);}
+        .upload-zone small{font-size:.78rem;color:var(--gray-400);}
+        .upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+        .upload-wrap{position:relative;}
+        .file-preview{display:none;margin-top:10px;padding:10px 14px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.88rem;color:var(--blue);display:flex;align-items:center;gap:10px;}
+        .file-preview.show{display:flex;}
+        .rm-file{background:none;border:none;color:#DC2626;cursor:pointer;margin-left:auto;font-size:1rem;}
+
+        /* ADD MORE BTN */
+        .add-item-btn{display:flex;align-items:center;gap:10px;background:#EFF6FF;border:2px dashed var(--blue);color:var(--blue);padding:14px 22px;border-radius:14px;font-weight:700;font-size:.95rem;cursor:pointer;width:100%;justify-content:center;transition:all .3s;margin-bottom:24px;}
+        .add-item-btn:hover{background:var(--blue);color:#fff;}
+
+        /* SUBMIT */
+        .submit-btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--orange),#F97316);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
+        .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(234,88,12,.35);}
+        .back-link{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--blue);font-weight:600;text-decoration:none;font-size:.9rem;padding:12px;border:2px solid var(--gray-200);border-radius:12px;transition:all .3s;}
+        .back-link:hover{border-color:var(--blue);background:#EFF6FF;}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .mobile-btn{display:block;}
+            .nav-links{position:absolute;top:100%;left:0;width:100%;background:rgba(30,64,175,.98);flex-direction:column;align-items:stretch;padding:16px 20px;gap:.5rem;display:none;box-shadow:0 15px 30px rgba(0,0,0,.2);}
+            .nav-links.open{display:flex;}
+            .nav-links a{border-radius:10px;padding:.75rem 1rem;}
+            .form-row{grid-template-columns:1fr;}
+            .main{padding:80px 14px 30px;}
+            .item-block{padding:18px;}
+            .hero-bar{padding:22px;}
         }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .file-upload-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #CBD5E1;
-            border-radius: 12px;
-            padding: 40px 20px;
-            transition: all 0.3s ease;
-            background: #F8FAFC;
-            cursor: pointer;
-        }
-
-        .file-upload-container:hover {
-            border-color: #2563EB;
-            background: #EFF6FF;
-        }
-
-        .file-upload-container.drag-over {
-            border-color: #2563EB;
-            background: #EFF6FF;
-            transform: scale(1.02);
-        }
-
-        .file-upload-input {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-upload-content {
-            text-align: center;
-            pointer-events: none;
-        }
-
-        .file-upload-icon {
-            font-size: 3em;
-            color: #64748B;
-            margin-bottom: 15px;
-        }
-
-        .file-upload-text {
-            color: #475569;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .file-upload-hint {
-            color: #94A3B8;
-            font-size: 0.9em;
-        }
-
-        .file-preview {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: #F0F9FF;
-            border: 1px solid #BAE6FD;
-            border-radius: 8px;
-        }
-
-        .file-preview.show {
-            display: block;
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-info i {
-            color: #0EA5E9;
-        }
-
-        .required {
-            color: #DC2626;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
-            color: #FFFFFF;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.3);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #2563EB;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 12px 24px;
-            border: 2px solid #2563EB;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: #2563EB;
-            color: #FFFFFF;
-            transform: translateY(-2px);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 20px 15px;
-            }
-
-            .header-content h2 {
-                font-size: 2em;
-            }
-
-            .form-card {
-                padding: 25px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .error-message {
-            color: #DC2626;
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .success-message {
-            background: #ECFDF5;
-            color: #065F46;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #A7F3D0;
-            margin-bottom: 20px;
-            display: none;
+        @media(max-width:420px){
+            .logo{font-size:1.3rem;}
+            .hero-bar h2{font-size:1.3rem;}
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-bar1">
-            <div style="font-weight:800;" class="logo">UjamaaFlow</div>
-            <div style="display:flex;gap:10px;" class="nav-links">
-                <a href="{{ url_for('main.dashboard') }}" style="color:#fff;text-decoration:none;">Dashboard</a>
-                <a href="{{ url_for('main.donate') }}" style="color:#fff;text-decoration:none;">Create Donation</a>
-                <a href="{{ url_for('main.my_donations') }}" style="color:#fff;text-decoration:none;">My Donations</a>
-                <a href="{{ url_for('auth.logout') }}" style="color:#fff;text-decoration:none;">Logout</a>
-            </div>
-        </div>
-    </nav>
-    <div class="main-container">
-        <div class="header-section fade-in">
-            <div class="header-content">
-                <h2><i class="fas fa-hand-holding-heart"></i> Submit a Donation</h2>
-                <p>Share your generosity and make a difference in someone's life today</p>
-            </div>
-        </div>
 
-        <div class="form-card fade-in">
-            <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i> Your donation has been submitted successfully!
-            </div>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+        <button class="mobile-btn" id="mobileBtn" aria-label="Toggle menu"><i class="fas fa-bars" id="menuIcon"></i></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.donate') }}">New Donation</a></li>
+            <li><a href="{{ url_for('main.my_donations') }}">My Donations</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
 
-            <form method="POST" enctype="multipart/form-data" id="donationForm">
-                <div class="form-group">
-                    <label for="item">Item Name <span class="required">*</span></label>
-                    <input type="text" id="item" name="item" required placeholder="e.g., Winter Clothing, School Supplies, Food Items">
-                    <div class="error-message" id="itemError">Please enter the item name</div>
-                </div>
+<main class="main">
+    <div class="hero-bar">
+        <h2><i class="fas fa-hand-holding-heart"></i> Submit a Donation</h2>
+        <p>Share your generosity — add one or more items below and make a real difference today.</p>
+    </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="text" id="quantity" name="quantity" placeholder="e.g., 5 items, 1 bag, 10 pieces">
+    <!-- Flash messages -->
+    <div class="flash-zone">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas {% if category == 'error' %}fa-exclamation-triangle{% elif category == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
+                        {{ message }}
                     </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="donateForm">
+        <div id="itemsContainer">
+            <!-- Item 1 (template) -->
+            <div class="item-block" id="item-1">
+                <div class="item-block-header">
+                    <div class="item-num"><i class="fas fa-gift"></i> Item 1</div>
+                </div>
+                <!-- Item Name -->
+                <div class="form-group">
+                    <label>Item Name <span class="req">*</span></label>
+                    <input type="text" name="item[]" placeholder="e.g. Winter Clothing, School Supplies" required>
+                </div>
+                <div class="form-row">
+                    <!-- Quantity -->
                     <div class="form-group">
-                        <label for="category">Category</label>
-                        <select id="category" name="category">
-                            <option value="">Select Category</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="food">Food</option>
-                            <option value="education">Education</option>
+                        <label>Quantity</label>
+                        <input type="text" name="quantity[]" placeholder="e.g. 5 pieces, 1 bag">
+                    </div>
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category[]">
+                            <option value="General">Select Category</option>
+                            <option value="clothing">Clothing &amp; Shoes</option>
+                            <option value="food">Food &amp; Groceries</option>
+                            <option value="education">Education &amp; Books</option>
                             <option value="household">Household Items</option>
-                            <option value="toys">Toys & Games</option>
-                            <option value="electronics">Electronics</option>
+                            <option value="electronics">Electronics &amp; Tech</option>
+                            <option value="hygiene">Hygiene &amp; Health</option>
+                            <option value="toys">Toys &amp; Games</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
                 </div>
-
+                <!-- Description -->
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" placeholder="Provide detailed information about the condition, size, color, or any other relevant details about your donation..."></textarea>
+                    <label>Description</label>
+                    <textarea name="description[]" placeholder="Condition, size, colour, or any relevant details…"></textarea>
                 </div>
-
+                <!-- Location -->
                 <div class="form-group">
-                    <label for="location">Pickup Location <span class="required">*</span></label>
-                    <input type="text" id="location" name="location" required placeholder="Enter your address or preferred pickup location">
-                    <div class="error-message" id="locationError">Please enter the pickup location</div>
+                    <label>Pickup Location <span class="req">*</span></label>
+                    <input type="text" name="location[]" placeholder="e.g. Kibera, Nairobi" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="donation_image">Upload Image</label>
-                    <div class="file-upload-container" id="fileUploadContainer">
-                        <input type="file" id="donation_image" name="donation_image" class="file-upload-input" accept="image/*">
-                        <div class="file-upload-content">
-                            <div class="file-upload-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </div>
-                            <div class="file-upload-text">Click to upload or drag and drop</div>
-                            <div class="file-upload-hint">PNG, JPG, GIF up to 5MB</div>
-                        </div>
-                    </div>
-                    <div class="file-preview" id="filePreview">
-                        <div class="file-info">
-                            <i class="fas fa-file-image"></i>
-                            <span id="fileName"></span>
-                            <button type="button" onclick="removeFile()" style="margin-left: auto; background: none; border: none; color: #DC2626; cursor: pointer;">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-row">
+                    <!-- Contact Method -->
                     <div class="form-group">
-                        <label for="contact_method">Preferred Contact Method</label>
-                        <select id="contact_method" name="contact_method">
+                        <label>Preferred Contact</label>
+                        <select name="contact_method[]" class="contact-select">
                             <option value="email">Email</option>
-                            <option value="phone">Phone</option>
-                            
+                            <option value="phone">Phone Number</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="availability">Best Time to Contact</label>
-                        <input type="text" id="availability" name="availability" placeholder="e.g., Weekdays 9AM-5PM, Evenings, Weekends">
+                    <!-- Phone (shown only when phone selected) -->
+                    <div class="form-group phone-field">
+                        <label>Phone Number <span class="req">*</span></label>
+                        <input type="text" name="phone_number[]" class="phone-input" placeholder="e.g. 0712 345 678">
+                        <div class="phone-hint">Kenyan number: 07xx or 01xx or +254…</div>
+                        <div class="phone-error">Please enter a valid Kenyan phone number</div>
                     </div>
                 </div>
-
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-heart"></i> Submit Donation
-                </button>
-            </form>
-
-            <div style="text-align: center;">
-                <a href="{{ url_for('main.dashboard') }}" class="back-link">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Dashboard
-                </a>
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label>Upload Image (optional)</label>
+                    <div class="upload-wrap">
+                        <div class="upload-zone" id="zone-1">
+                            <input type="file" name="donation_image[]" class="upload-input img-input" accept="image/*">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload or drag &amp; drop</p>
+                            <small>PNG, JPG, GIF up to 5 MB</small>
+                        </div>
+                        <div class="file-preview" id="preview-1">
+                            <i class="fas fa-file-image"></i>
+                            <span class="fname"></span>
+                            <button type="button" class="rm-file"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // File upload functionality
-        const fileInput = document.getElementById('donation_image');
-        const fileUploadContainer = document.getElementById('fileUploadContainer');
-        const filePreview = document.getElementById('filePreview');
-        const fileName = document.getElementById('fileName');
+        <!-- Add more items -->
+        <button type="button" class="add-item-btn" id="addItemBtn">
+            <i class="fas fa-plus-circle"></i> Add Another Item
+        </button>
 
-        // Handle file selection
-        fileInput.addEventListener('change', function(e) {
-            handleFileSelect(e.target.files[0]);
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-heart"></i> Submit Donation(s)
+        </button>
+
+        <a href="{{ url_for('main.dashboard') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </form>
+</main>
+
+<script>
+    // Mobile nav with X toggle
+    const mobileBtn = document.getElementById('mobileBtn');
+    const navLinks  = document.getElementById('navLinks');
+    const menuIcon  = document.getElementById('menuIcon');
+    if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('open');
+            menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
         });
-
-        // Handle drag and drop
-        fileUploadContainer.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('drag-over');
-        });
-
-        fileUploadContainer.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.classList.remove('drag-over');
-        });
-
-        fileUploadContainer.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFileSelect(files[0]);
+        document.addEventListener('click', e => {
+            if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+                navLinks.classList.remove('open');
+                menuIcon.className = 'fas fa-bars';
             }
         });
+    }
 
-        function handleFileSelect(file) {
-            if (file) {
-                // Validate file type
-                if (!file.type.startsWith('image/')) {
-                    alert('Please select an image file.');
-                    return;
-                }
+    // Auto-dismiss flashes
+    document.querySelectorAll('.flash').forEach(el => {
+        setTimeout(() => {
+            el.style.transition = 'all .4s';
+            el.style.opacity = '0'; el.style.transform = 'translateY(-6px)';
+            setTimeout(() => el.remove(), 400);
+        }, 6000);
+    });
 
-                // Validate file size (5MB limit)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File size must be less than 5MB.');
-                    return;
-                }
+    let itemCount = 1;
 
-                // Show file preview
-                fileName.textContent = file.name;
-                filePreview.classList.add('show');
-                fileUploadContainer.style.display = 'none';
-            }
+    // ─── Contact Method → Phone field toggle ───
+    function initContactSelect(block) {
+        const sel = block.querySelector('.contact-select');
+        const phoneField = block.querySelector('.phone-field');
+        if (!sel) return;
+        sel.addEventListener('change', () => {
+            phoneField.classList.toggle('show', sel.value === 'phone');
+            const inp = phoneField.querySelector('.phone-input');
+            inp.required = sel.value === 'phone';
+        });
+    }
+
+    // ─── File upload UI ───
+    function initUpload(block) {
+        const zone = block.querySelector('.upload-zone');
+        const input = block.querySelector('.img-input');
+        const preview = block.querySelector('.file-preview');
+        const fname = preview.querySelector('.fname');
+        const rmBtn = preview.querySelector('.rm-file');
+
+        function show(file) {
+            fname.textContent = file.name;
+            preview.classList.add('show');
+            zone.style.display = 'none';
+        }
+        function clear() {
+            input.value = '';
+            preview.classList.remove('show');
+            zone.style.display = '';
         }
 
-        function removeFile() {
-            fileInput.value = '';
-            filePreview.classList.remove('show');
-            fileUploadContainer.style.display = 'flex';
-        }
-
-        // Form validation
-        document.getElementById('donationForm').addEventListener('submit', function(e) {
-            let isValid = true;
-
-            // Validate required fields
-            const item = document.getElementById('item');
-            const location = document.getElementById('location');
-
-            if (!item.value.trim()) {
-                document.getElementById('itemError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('itemError').style.display = 'none';
+        input.addEventListener('change', e => {
+            if (e.target.files[0]) show(e.target.files[0]);
+        });
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+        zone.addEventListener('drop', e => {
+            e.preventDefault(); zone.classList.remove('over');
+            const f = e.dataTransfer.files[0];
+            if (f && f.type.startsWith('image/')) {
+                const dt = new DataTransfer(); dt.items.add(f);
+                input.files = dt.files; show(f);
             }
+        });
+        rmBtn.addEventListener('click', clear);
+    }
 
-            if (!location.value.trim()) {
-                document.getElementById('locationError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('locationError').style.display = 'none';
-            }
+    // ─── Kenyan phone validation ───
+    function validateKEPhone(val) {
+        return /^(?:\+?254|0)[17]\d{8}$/.test(val.replace(/\s/g,''));
+    }
 
-            if (!isValid) {
-                e.preventDefault();
+    // Init first block
+    initContactSelect(document.getElementById('item-1'));
+    initUpload(document.getElementById('item-1'));
+
+    // ─── Add another item ───
+    document.getElementById('addItemBtn').addEventListener('click', () => {
+        itemCount++;
+        const first = document.getElementById('item-1');
+        const clone = first.cloneNode(true);
+        clone.id = `item-${itemCount}`;
+
+        // Update header label
+        clone.querySelector('.item-num').innerHTML = `<i class="fas fa-gift"></i> Item ${itemCount}`;
+
+        // Clear all input values
+        clone.querySelectorAll('input, textarea').forEach(el => {
+            el.value = '';
+            if (el.type === 'file') { /* already cleared by cloneNode */ }
+        });
+        clone.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+        clone.querySelectorAll('.phone-field').forEach(el => el.classList.remove('show'));
+        clone.querySelectorAll('.phone-error').forEach(el => el.classList.remove('show'));
+        clone.querySelectorAll('.file-preview').forEach(el => el.classList.remove('show'));
+        clone.querySelectorAll('.upload-zone').forEach(el => el.style.display = '');
+
+        // Add remove button
+        const header = clone.querySelector('.item-block-header');
+        const rmBtn = document.createElement('button');
+        rmBtn.type = 'button';
+        rmBtn.className = 'remove-btn';
+        rmBtn.innerHTML = '<i class="fas fa-trash"></i> Remove';
+        rmBtn.addEventListener('click', () => {
+            clone.remove();
+            renumberItems();
+        });
+        header.appendChild(rmBtn);
+
+        document.getElementById('itemsContainer').appendChild(clone);
+        initContactSelect(clone);
+        initUpload(clone);
+        clone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function renumberItems() {
+        document.querySelectorAll('.item-block').forEach((block, i) => {
+            block.querySelector('.item-num').innerHTML = `<i class="fas fa-gift"></i> Item ${i + 1}`;
+        });
+    }
+
+    // ─── Form submit validation ───
+    document.getElementById('donateForm').addEventListener('submit', e => {
+        let valid = true;
+
+        document.querySelectorAll('.item-block').forEach((block, idx) => {
+            const contactSel = block.querySelector('.contact-select');
+            if (contactSel && contactSel.value === 'phone') {
+                const phoneInput = block.querySelector('.phone-input');
+                const err = block.querySelector('.phone-error');
+                if (!validateKEPhone(phoneInput.value)) {
+                    err.classList.add('show');
+                    phoneInput.focus();
+                    valid = false;
+                } else {
+                    err.classList.remove('show');
+                }
             }
         });
 
-        // Add animations on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('.fade-in');
-            elements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.2}s`;
-            });
-
-            // Add focus effects to form inputs
-            const inputs = document.querySelectorAll('input, textarea, select');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-2px)';
-                    this.parentElement.style.transition = 'transform 0.3s ease';
-                });
-
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'translateY(0)';
-                });
-            });
-        });
-
-        
-    </script>
+        if (!valid) e.preventDefault();
+    });
+</script>
 </body>
 </html>

@@ -1,96 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Request a Resource - UjamaaFlow</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; color: #1f2937; line-height: 1.6; }
-    .navbar {
-      background-color: #1E40AF;
-      color: white;
-      display: flex;
-      padding: 14px 28px;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    .logo { font-size: 24px; font-weight: bold; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-    .logo i { color: #EA580C; }
-    .nav-links { list-style: none; display: flex; gap: 20px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
-    .nav-links a:hover { color: #FED7AA; }
-    .container { max-width: 600px; margin: 40px auto; padding: 0 20px; }
-    .page-title { font-size: 28px; font-weight: bold; text-align: center; color: #1E40AF; margin-bottom: 20px; }
-    .request-form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.06); }
-    .form-group { display: flex; flex-direction: column; margin-bottom: 18px; }
-    .form-group label { font-weight: 600; margin-bottom: 6px; color: #374151; }
-    .form-group input, .form-group textarea, .form-group select {
-      padding: 12px 14px; font-size: 15px; border-radius: 8px; border: 1px solid #cbd5e1; outline-color: #60a5fa; background: #fff;
-    }
-    .form-group textarea { resize: vertical; }
-    .submit-btn {
-      background-color: #EA580C; color: white; padding: 14px 20px; font-size: 16px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; width: 100%; transition: background 0.3s ease;
-    }
-    .submit-btn:hover { background-color: #C2410C; }
-    .back-link { display: inline-block; text-align: center; margin-top: 20px; color: #1E40AF; text-decoration: none; font-weight: 500; width: 100%; }
-    .back-link:hover { text-decoration: underline; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UjamaaFlow — Request a Resource</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --blue:#2563EB;--blue-dark:#1D4ED8;--blue-deep:#1E40AF;
+            --orange:#EA580C;--teal:#0891B2;
+            --gray-50:#FAFAFA;--gray-100:#F3F4F6;--gray-200:#E5E7EB;
+            --gray-400:#9CA3AF;--gray-600:#6B7280;--gray-800:#111827;
+            --white:#FFFFFF;--red:#DC2626;--green:#059669;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+
+        /* NAVBAR */
+        .navbar{background:rgba(30,64,175,.96);backdrop-filter:blur(20px);padding:.9rem 0;position:fixed;top:0;width:100%;z-index:1000;border-bottom:1px solid rgba(255,255,255,.1);}
+        .nav-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;}
+        .logo{display:flex;align-items:center;gap:.4rem;font-size:1.5rem;font-weight:800;color:#fff;text-decoration:none;}
+        .logo i{color:var(--orange);}
+        .nav-links{display:flex;list-style:none;gap:.5rem;align-items:center;}
+        .nav-links a{color:#fff;text-decoration:none;padding:.5rem .9rem;border-radius:20px;font-weight:500;font-size:.9rem;transition:all .3s;}
+        .nav-links a:hover{background:rgba(234,88,12,.2);}
+        .mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;}
+
+        /* LAYOUT */
+        .main{max-width:640px;margin:0 auto;padding:90px 16px 40px;}
+
+        /* HERO */
+        .hero-bar{background:linear-gradient(135deg,var(--blue-deep),var(--teal));color:#fff;padding:30px;border-radius:20px;margin-bottom:24px;text-align:center;}
+        .hero-bar h2{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:800;margin-bottom:6px;}
+        .hero-bar p{opacity:.9;font-size:.93rem;}
+
+        /* FLASH */
+        .flash-zone{margin-bottom:16px;}
+        .flash{padding:12px 16px;border-radius:12px;font-size:.9rem;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:10px;animation:fadeSlide .4s ease;}
+        @keyframes fadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .flash.error{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;}
+        .flash.success{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
+        .flash.info{background:#EFF6FF;color:var(--blue);border:1px solid #BFDBFE;}
+
+        /* FORM CARD */
+        .form-card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 8px 24px rgba(0,0,0,.06);border:1px solid var(--gray-200);}
+        .form-group{margin-bottom:20px;}
+        .form-group label{display:block;font-weight:600;color:var(--gray-800);font-size:.88rem;margin-bottom:7px;}
+        .req{color:var(--red);}
+        .form-group input,
+        .form-group select,
+        .form-group textarea{
+            width:100%;padding:13px 14px;border:2px solid var(--gray-200);border-radius:12px;
+            font-size:.95rem;font-family:inherit;background:var(--gray-50);color:var(--gray-800);
+            transition:all .3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+        .form-group textarea{min-height:100px;resize:vertical;}
+        .field-hint{font-size:.78rem;color:var(--gray-600);margin-top:4px;}
+        .field-error{color:var(--red);font-size:.8rem;margin-top:4px;display:none;}
+        .field-error.show{display:block;}
+
+        /* URGENCY PILLS */
+        .urgency-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+        .urgency-opt{position:relative;}
+        .urgency-opt input[type="radio"]{position:absolute;opacity:0;}
+        .urgency-label{padding:8px 16px;border:2px solid var(--gray-200);border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--gray-600);transition:all .3s;display:block;}
+        .urgency-opt input:checked + .urgency-label{border-color:var(--orange);color:var(--orange);background:#FFF7ED;}
+        .urgency-label:hover{border-color:var(--blue);color:var(--blue);}
+
+        /* SUBMIT */
+        .submit-btn{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+        .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.35);}
+        .back-link{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--blue);font-weight:600;text-decoration:none;font-size:.9rem;padding:12px;border:2px solid var(--gray-200);border-radius:12px;transition:all .3s;margin-top:14px;}
+        .back-link:hover{border-color:var(--blue);background:#EFF6FF;}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .mobile-btn{display:block;}
+            .nav-links{position:absolute;top:100%;left:0;width:100%;background:rgba(30,64,175,.98);flex-direction:column;align-items:stretch;padding:16px 20px;gap:.5rem;display:none;box-shadow:0 15px 30px rgba(0,0,0,.2);}
+            .nav-links.open{display:flex;}
+            .nav-links a{border-radius:10px;padding:.75rem 1rem;}
+            .main{padding:80px 12px 30px;}
+            .form-card{padding:20px;}
+            .hero-bar{padding:22px;}
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="{{ url_for('main.dashboard') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
-    <ul class="nav-links">
-      <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-      <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
-      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-    </ul>
-  </nav>
 
-  <div class="container">
-    <h2 class="page-title">Request a Resource</h2>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+        <button class="mobile-btn" id="mobileBtn"><i class="fas fa-bars" id="menuIcon"></i></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <form method="POST" action="" class="request-form">
-      <div class="form-group">
-        <label for="item_needed">Item Needed <span style="color: #DC2626;">*</span></label>
-        <input type="text" id="item_needed" name="item_needed" required placeholder="e.g. Rice, Warm Blanket, Textbooks">
-      </div>
+<main class="main">
+    <div class="hero-bar">
+        <h2><i class="fas fa-hand-holding-heart"></i> Request a Resource</h2>
+        <p>Tell us what you need and our community will try to help. Every request matters.</p>
+    </div>
 
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select id="category" name="category">
-          <option value="Food">Food & Groceries</option>
-          <option value="Clothing">Clothing & Shoes</option>
-          <option value="Books">Books & Education</option>
-          <option value="Hygiene">Hygiene & Health</option>
-          <option value="Medical">Medical Assistance</option>
-          <option value="Electronics">Electronics & Tech</option>
-          <option value="Household">Household Items</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+    <div class="flash-zone">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas {% if category == 'error' %}fa-exclamation-triangle{% elif category == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
-      <div class="form-group">
-        <label for="quantity">Quantity / Scale</label>
-        <input type="text" id="quantity" name="quantity" placeholder="e.g., 2 bags, 1 unit, 5 books">
-      </div>
+    <div class="form-card">
+        <form method="POST" id="reqForm" novalidate>
 
-      <div class="form-group">
-        <label for="reason">Reason / Circumstance</label>
-        <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe why this resource is needed..."></textarea>
-      </div>
+            <!-- Item -->
+            <div class="form-group">
+                <label for="item_needed">What do you need? <span class="req">*</span></label>
+                <input type="text" id="item_needed" name="item_needed" placeholder="e.g. Rice, Warm Blanket, School Textbooks" required>
+                <div class="field-error" id="itemErr">Please describe what you need</div>
+            </div>
 
-      <div class="form-group">
-        <label for="location">Location <span style="color: #DC2626;">*</span></label>
-        <input type="text" id="location" name="location" required placeholder="e.g. Kibera, Nairobi or Nakuru Town">
-      </div>
+            <!-- Category -->
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="Food">Food &amp; Groceries</option>
+                    <option value="Clothing">Clothing &amp; Shoes</option>
+                    <option value="Books">Books &amp; Education</option>
+                    <option value="Hygiene">Hygiene &amp; Health</option>
+                    <option value="Medical">Medical Assistance</option>
+                    <option value="Electronics">Electronics &amp; Tech</option>
+                    <option value="Household">Household Items</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
 
-      <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Submit Request</button>
-    </form>
+            <!-- Quantity -->
+            <div class="form-group">
+                <label for="quantity">Quantity / Scale</label>
+                <input type="text" id="quantity" name="quantity" placeholder="e.g. 2 bags, 1 unit, enough for a family of 4">
+            </div>
 
-    <a href="{{ url_for('main.dashboard') }}" class="back-link">← Back to Dashboard</a>
-  </div>
+            <!-- Urgency -->
+            <div class="form-group">
+                <label>Urgency Level</label>
+                <div class="urgency-grid">
+                    <div class="urgency-opt">
+                        <input type="radio" name="urgency" id="urgLow" value="low">
+                        <label for="urgLow" class="urgency-label">Low</label>
+                    </div>
+                    <div class="urgency-opt">
+                        <input type="radio" name="urgency" id="urgMed" value="medium" checked>
+                        <label for="urgMed" class="urgency-label">Medium</label>
+                    </div>
+                    <div class="urgency-opt">
+                        <input type="radio" name="urgency" id="urgHigh" value="high">
+                        <label for="urgHigh" class="urgency-label">🔴 Urgent</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reason -->
+            <div class="form-group">
+                <label for="reason">Why do you need this?</label>
+                <textarea id="reason" name="reason" placeholder="Briefly explain your situation — this helps donors understand your need…"></textarea>
+                <div class="field-hint">This is optional but greatly increases your chances of receiving help.</div>
+            </div>
+
+            <!-- Location -->
+            <div class="form-group">
+                <label for="location">Your Location <span class="req">*</span></label>
+                <input type="text" id="location" name="location" placeholder="e.g. Kibera, Nairobi or Nakuru Town" required>
+                <div class="field-hint">A general area is fine — we don't need your exact address.</div>
+                <div class="field-error" id="locErr">Please enter your location</div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Request
+            </button>
+        </form>
+    </div>
+
+    <a href="{{ url_for('main.dashboard') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</main>
+
+<script>
+    const mobileBtn = document.getElementById('mobileBtn');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = document.getElementById('menuIcon');
+    if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('open');
+            menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+        });
+        document.addEventListener('click', e => {
+            if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+                navLinks.classList.remove('open');
+                menuIcon.className = 'fas fa-bars';
+            }
+        });
+    }
+
+    // Auto-dismiss flashes
+    document.querySelectorAll('.flash').forEach(el => {
+        setTimeout(() => {
+            el.style.transition = 'all .4s';
+            el.style.opacity = '0'; el.style.transform = 'translateY(-6px)';
+            setTimeout(() => el.remove(), 400);
+        }, 6000);
+    });
+
+    // Inline validation
+    const form = document.getElementById('reqForm');
+    function showErr(id, show) { document.getElementById(id).classList.toggle('show', show); }
+
+    document.getElementById('item_needed').addEventListener('blur', function() {
+        showErr('itemErr', !this.value.trim());
+    });
+    document.getElementById('location').addEventListener('blur', function() {
+        showErr('locErr', !this.value.trim());
+    });
+
+    form.addEventListener('submit', e => {
+        let ok = true;
+        if (!document.getElementById('item_needed').value.trim()) { showErr('itemErr', true); ok = false; }
+        if (!document.getElementById('location').value.trim()) { showErr('locErr', true); ok = false; }
+        if (!ok) e.preventDefault();
+    });
+</script>
 </body>
 </html>

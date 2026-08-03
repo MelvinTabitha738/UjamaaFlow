@@ -1,296 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Browse Available Donations - UjamaaFlow</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; color: #1f2937; line-height: 1.6; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UjamaaFlow — Browse Donations</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --blue:#2563EB;--blue-dark:#1D4ED8;--blue-deep:#1E40AF;
+            --orange:#EA580C;--teal:#0891B2;
+            --gray-50:#FAFAFA;--gray-100:#F3F4F6;--gray-200:#E5E7EB;
+            --gray-400:#9CA3AF;--gray-600:#6B7280;--gray-800:#111827;
+            --white:#FFFFFF;--red:#DC2626;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
 
-    /* Navbar */
-    .navbar {
-      background-color: #1E40AF;
-      padding: 14px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      position: relative;
-    }
+        /* NAVBAR */
+        .navbar{background:rgba(30,64,175,.96);backdrop-filter:blur(20px);padding:.9rem 0;position:fixed;top:0;width:100%;z-index:1000;border-bottom:1px solid rgba(255,255,255,.1);}
+        .nav-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;}
+        .logo{display:flex;align-items:center;gap:.4rem;font-size:1.5rem;font-weight:800;color:#fff;text-decoration:none;}
+        .logo i{color:var(--orange);}
+        .nav-links{display:flex;list-style:none;gap:.5rem;align-items:center;}
+        .nav-links a{color:#fff;text-decoration:none;padding:.5rem .9rem;border-radius:20px;font-weight:500;font-size:.9rem;transition:all .3s;}
+        .nav-links a:hover{background:rgba(234,88,12,.2);}
+        .mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;}
 
-    .logo {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        /* HERO */
+        .hero{background:linear-gradient(135deg,var(--blue-deep),var(--teal));color:#fff;padding:80px 20px 30px;text-align:center;}
+        .hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;margin-bottom:8px;}
+        .hero p{opacity:.9;font-size:.95rem;max-width:520px;margin:0 auto;}
 
-    .logo i { color: #EA580C; }
+        /* FILTER BAR */
+        .filter-bar{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:-20px 20px 28px;position:relative;z-index:2;max-width:1200px;margin-left:auto;margin-right:auto;}
+        .filter-row{display:flex;gap:12px;flex-wrap:wrap;}
+        .filter-row input,
+        .filter-row select{flex:1;min-width:130px;padding:11px 14px;border:2px solid var(--gray-200);border-radius:10px;font-size:.9rem;font-family:inherit;background:var(--gray-50);transition:border-color .3s;}
+        .filter-row input:focus,
+        .filter-row select:focus{outline:none;border-color:var(--blue);}
+        .filter-btn{background:var(--blue);color:#fff;padding:11px 22px;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .3s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+        .filter-btn:hover{background:var(--blue-dark);}
+        .clear-btn{background:var(--gray-100);color:var(--gray-600);padding:11px 16px;border:none;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all .3s;white-space:nowrap;}
+        .clear-btn:hover{background:var(--gray-200);}
 
-    .nav-menu { display: flex; align-items: center; gap: 20px; }
-    .nav-links { list-style: none; display: flex; gap: 20px; }
-    .nav-links a { color: white; text-decoration: none; font-size: 15px; font-weight: 500; }
-    .nav-links a:hover { color: #FED7AA; }
-    .mobile-menu-btn { display: none; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        /* RESULT COUNT */
+        .result-info{max-width:1200px;margin:0 auto 18px;padding:0 20px;color:var(--gray-600);font-size:.9rem;font-weight:500;}
 
-    .logout-btn {
-      background-color: #C2410C;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
+        /* CARDS GRID */
+        .container{max-width:1200px;margin:0 auto;padding:0 20px 40px;}
+        .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+        .card{background:#fff;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.05);border:1px solid var(--gray-200);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+        .card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.1);}
+        .card-img{width:100%;height:160px;object-fit:cover;}
+        .card-img-placeholder{height:80px;background:linear-gradient(135deg,#EFF6FF,#F0F9FF);display:flex;align-items:center;justify-content:center;color:#BFDBFE;font-size:2rem;}
+        .card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:6px;}
+        .cat-tag{display:inline-block;padding:3px 10px;background:#EFF6FF;color:var(--blue-dark);border-radius:20px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+        .card-title{font-size:1.05rem;font-weight:700;color:var(--gray-800);}
+        .card-desc{font-size:.85rem;color:var(--gray-600);font-style:italic;}
+        .card-meta{font-size:.82rem;color:var(--gray-600);display:flex;gap:12px;flex-wrap:wrap;}
+        .card-meta span{display:flex;align-items:center;gap:4px;}
+        .card-meta i{color:var(--gray-400);}
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 16px;
-    }
+        /* REPORT */
+        .report-toggle{font-size:.8rem;color:var(--gray-400);cursor:pointer;background:none;border:none;margin-top:6px;text-align:left;display:flex;align-items:center;gap:4px;padding:4px 0;}
+        .report-toggle:hover{color:var(--red);}
+        .report-form{display:none;margin-top:8px;gap:6px;}
+        .report-form.open{display:flex;}
+        .report-form input{flex:1;padding:8px 10px;font-size:.82rem;border-radius:8px;border:1px solid var(--gray-200);font-family:inherit;}
+        .report-form button{background:var(--red);color:#fff;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;transition:background .2s;}
+        .report-form button:hover{background:#b91c1c;}
 
-    h1 {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: bold;
-      text-align: center;
-      color: #1E40AF;
-      margin-bottom: 20px;
-    }
+        /* EMPTY STATE */
+        .empty{text-align:center;padding:60px 20px;color:var(--gray-600);background:#fff;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.05);grid-column:1/-1;}
+        .empty i{font-size:3rem;color:#BFDBFE;margin-bottom:14px;}
+        .empty h3{font-size:1.2rem;font-weight:700;color:var(--gray-800);margin-bottom:8px;}
+        .empty a{color:var(--blue);font-weight:600;text-decoration:none;}
+        .empty a:hover{text-decoration:underline;}
 
-    /* Filters */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 30px;
-      background: white;
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .filters input, .filters select {
-      padding: 10px 14px;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      outline-color: #60a5fa;
-      flex: 1;
-      min-width: 150px;
-    }
-
-    .filters button {
-      background-color: #1E40AF;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
-
-    .filters button:hover { background-color: #3B82F6; }
-
-    /* RESPONSIVE CARD GRID SCALING */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: #fff;
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      border: 1px solid #E5E7EB;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover { transform: translateY(-4px); }
-
-    .item {
-      font-weight: bold;
-      font-size: 1.05rem;
-      color: #2563eb;
-      margin-bottom: 4px;
-    }
-
-    .category-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      background: #EFF6FF;
-      color: #1D4ED8;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .muted {
-      color: #6b7280;
-      font-size: 0.88rem;
-      margin-bottom: 6px;
-    }
-
-    .card img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      margin-top: 8px;
-    }
-
-    /* Report form */
-    .report {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-    }
-
-    .report input {
-      flex: 1;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-    }
-
-    .report button {
-      background-color: #C2410C;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-
-    .report button:hover { background-color: #f97316; }
-
-    .empty {
-      text-align: center;
-      color: #6b7280;
-      padding: 40px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      grid-column: 1 / -1;
-    }
-
-    @media (max-width: 768px) {
-      .mobile-menu-btn { display: block; }
-      .nav-menu {
-        position: absolute;
-        top: 100%; left: 0; width: 100%;
-        background: #1E40AF;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 16px 20px;
-        gap: 12px;
-        display: none;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-      }
-      .nav-menu.active { display: flex; }
-      .nav-links { flex-direction: column; gap: 10px; width: 100%; }
-
-      .cards-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-      }
-
-      .card { padding: 12px; }
-      .item { font-size: 0.95rem; }
-      .muted { font-size: 0.8rem; }
-    }
-  </style>
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .mobile-btn{display:block;}
+            .nav-links{position:absolute;top:100%;left:0;width:100%;background:rgba(30,64,175,.98);flex-direction:column;align-items:stretch;padding:16px 20px;gap:.5rem;display:none;box-shadow:0 15px 30px rgba(0,0,0,.2);}
+            .nav-links.open{display:flex;}
+            .nav-links a{border-radius:10px;padding:.75rem 1rem;}
+            .hero{padding:70px 16px 28px;}
+            .filter-bar{margin:0 12px;padding:14px;}
+            .result-info,.container{padding:0 12px 30px;}
+            .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+            .card-body{padding:12px;}
+            .card-title{font-size:.95rem;}
+        }
+        @media(max-width:400px){
+            .cards-grid{grid-template-columns:1fr;}
+        }
+    </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
-    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
-    <div class="nav-menu" id="navMenu">
-      <ul class="nav-links">
-        <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-        <li><a href="{{ url_for('main.request_resource') }}">Request Resource</a></li>
-        <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
-        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-      </ul>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="{{ url_for('main.home') }}" class="logo"><i class="fas fa-heart"></i> UjamaaFlow</a>
+        <button class="mobile-btn" id="mobileBtn"><i class="fas fa-bars" id="menuIcon"></i></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.request_resource') }}">Request Resource</a></li>
+            <li><a href="{{ url_for('main.browse') }}">Browse Donations</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
     </div>
-  </nav>
+</nav>
 
-  <!-- Main Content -->
-  <div class="container">
-    <h1>Available Community Donations</h1>
-    
-    <form class="filters" method="GET" action="{{ url_for('main.browse') }}">
-      <input type="text" name="q" placeholder="Search item name or keyword" value="{{ q }}" />
-      <select name="category">
-        <option value="all">All Categories</option>
-        <option value="food" {% if category == 'food' %}selected{% endif %}>Food & Groceries</option>
-        <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing & Shoes</option>
-        <option value="books" {% if category == 'books' %}selected{% endif %}>Books & Stationery</option>
-        <option value="hygiene" {% if category == 'hygiene' %}selected{% endif %}>Hygiene Items</option>
-        <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
-        <option value="household" {% if category == 'household' %}selected{% endif %}>Household Items</option>
-      </select>
-      <input type="text" name="location" placeholder="Location" value="{{ location }}" />
-      <button type="submit"><i class="fas fa-search"></i> Filter</button>
-    </form>
+<!-- HERO -->
+<div class="hero">
+    <h1><i class="fas fa-boxes"></i> Available Community Donations</h1>
+    <p>Find resources shared by generous donors in your area.</p>
+</div>
 
+<!-- FILTER BAR -->
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;">
+    <div class="filter-bar">
+        <form class="filter-row" method="GET" action="{{ url_for('main.browse') }}">
+            <input type="text" name="q" placeholder="🔍 Search item or keyword" value="{{ q }}">
+            <select name="category">
+                <option value="all">All Categories</option>
+                <option value="food" {% if category == 'food' %}selected{% endif %}>Food &amp; Groceries</option>
+                <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing &amp; Shoes</option>
+                <option value="books" {% if category == 'books' %}selected{% endif %}>Books &amp; Education</option>
+                <option value="hygiene" {% if category == 'hygiene' %}selected{% endif %}>Hygiene</option>
+                <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
+                <option value="household" {% if category == 'household' %}selected{% endif %}>Household Items</option>
+            </select>
+            <input type="text" name="location" placeholder="📍 Location" value="{{ location }}">
+            <button type="submit" class="filter-btn"><i class="fas fa-search"></i> Filter</button>
+            <a href="{{ url_for('main.browse') }}" class="clear-btn"><i class="fas fa-times"></i> Clear</a>
+        </form>
+    </div>
+</div>
+
+<!-- RESULT COUNT -->
+<div class="result-info" style="margin-top:24px;">
+    {% if donations %}
+        Showing <strong>{{ donations|length }}</strong> available donation{{ 's' if donations|length != 1 else '' }}
+        {% if q %} for "<strong>{{ q }}</strong>"{% endif %}
+        {% if category and category != 'all' %} in <strong>{{ category }}</strong>{% endif %}
+        {% if location %} near <strong>{{ location }}</strong>{% endif %}
+    {% endif %}
+</div>
+
+<div class="container">
     <div class="cards-grid">
-      {% if donations and donations|length > 0 %}
-        {% for d in donations %}
-          <div class="card">
-            <div>
-              <span class="category-tag">{{ d.category or 'General' }}</span>
-              <div class="item">{{ d.item }}</div>
-              {% if d.description %}
-                <div class="muted">"{{ d.description }}"</div>
-              {% endif %}
-              <div class="muted">
-                <strong>Qty:</strong> {{ d.quantity or 'N/A' }} • <strong>Loc:</strong> {{ d.location or 'N/A' }}
-              </div>
-            </div>
-            {% if d.media and d.media|length > 0 %}
-              <img src="{{ d.media[0].file_path }}" alt="Donation image" />
-            {% endif %}
-            <form class="report" action="{{ url_for('main.report_donation', donation_id=d.id) }}" method="POST">
-              <input type="text" name="reason" placeholder="Report issue..." />
-              <button type="submit">Report</button>
-            </form>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="empty">
-          <i class="fas fa-search" style="font-size: 2rem; color: #2563EB; margin-bottom: 8px;"></i>
-          <p>No donations found matching your criteria. Try clearing search filters.</p>
-        </div>
-      {% endif %}
-    </div>
-  </div>
+        {% if donations and donations|length > 0 %}
+            {% for d in donations %}
+            <div class="card">
+                {% if d.media and d.media|length > 0 %}
+                    <img class="card-img" src="{{ d.media[0].file_path }}" alt="{{ d.item }}">
+                {% else %}
+                    <div class="card-img-placeholder"><i class="fas fa-gift"></i></div>
+                {% endif %}
+                <div class="card-body">
+                    <span class="cat-tag">{{ d.category or 'General' }}</span>
+                    <div class="card-title">{{ d.item }}</div>
+                    {% if d.description %}
+                        <div class="card-desc">"{{ d.description[:80] }}{% if d.description|length > 80 %}…{% endif %}"</div>
+                    {% endif %}
+                    <div class="card-meta">
+                        {% if d.quantity %}
+                            <span><i class="fas fa-cubes"></i> {{ d.quantity }}</span>
+                        {% endif %}
+                        {% if d.location %}
+                            <span><i class="fas fa-map-marker-alt"></i> {{ d.location }}</span>
+                        {% endif %}
+                    </div>
 
-  <script>
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navMenu = document.getElementById('navMenu');
-    if (mobileMenuBtn && navMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-      });
+                    <!-- Report toggle -->
+                    <button type="button" class="report-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+                        <i class="fas fa-flag"></i> Report an issue
+                    </button>
+                    <form class="report-form" action="{{ url_for('main.report_donation', donation_id=d.id) }}" method="POST">
+                        <input type="text" name="reason" placeholder="Reason for report…" required>
+                        <button type="submit">Report</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <i class="fas fa-search-minus"></i>
+                <h3>No donations found</h3>
+                <p>Try clearing your filters or check back later.</p>
+                <p style="margin-top:12px;"><a href="{{ url_for('main.browse') }}">Clear all filters →</a></p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const mobileBtn = document.getElementById('mobileBtn');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = document.getElementById('menuIcon');
+    if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('open');
+            menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+        });
+        document.addEventListener('click', e => {
+            if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+                navLinks.classList.remove('open');
+                menuIcon.className = 'fas fa-bars';
+            }
+        });
     }
-  </script>
+</script>
 </body>
 </html>

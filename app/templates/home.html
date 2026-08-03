@@ -217,14 +217,15 @@
             transform: translateY(-2px);
         }
 
-        /* HERO SECTION - BACKGROUND IMAGE CLEARLY VISIBLE */
+        /* HERO SECTION */
         .hero {
             padding: 9rem 0 5rem;
             color: var(--white);
             text-align: center;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(rgba(30, 64, 175, 0.3), rgba(0, 0, 0, 0.4)), url("/static/images/image.png") center/cover no-repeat fixed;
+            background: linear-gradient(rgba(30, 64, 175, 0.35), rgba(0, 0, 0, 0.45)), url("/static/images/image.png") center/cover no-repeat;
+            background-attachment: fixed;
         }
 
         .hero-content {
@@ -579,34 +580,44 @@
                 grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
                 gap: 1rem;
             }
+            .feature-card { padding: 1.25rem 0.75rem; }
+            .feature-icon { width: 56px; height: 56px; font-size: 1.4rem; margin-bottom: 1rem; }
+            .feature-card p { font-size: 0.82rem; }
+            .categories-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem; }
+            .category-card { padding: 1rem 0.5rem; }
+            .category-icon { font-size: 1.8rem; }
+        }
 
-            .feature-card {
-                padding: 1.25rem 0.75rem;
-            }
+        /* ── PHONE-SPECIFIC HERO FIXES ── */
+        @media (max-width: 480px) {
+            /* Disable fixed background (iOS glitch) */
+            .hero { background-attachment: scroll; padding: 7rem 0 3.5rem; }
 
-            .feature-icon {
-                width: 56px;
-                height: 56px;
-                font-size: 1.4rem;
-                margin-bottom: 1rem;
-            }
+            .hero h1 { font-size: clamp(1.5rem, 7vw, 2rem); }
+            .hero p  { font-size: 0.92rem; margin-bottom: 1.5rem; }
 
-            .feature-card p {
-                font-size: 0.82rem;
-            }
+            /* Stack CTA buttons full-width */
+            .hero .cta-buttons { flex-direction: column; align-items: center; gap: .75rem; }
+            .hero .cta-buttons .btn { width: 100%; max-width: 320px; justify-content: center; font-size: 1rem; padding: .85rem 1.5rem; }
 
-            .categories-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 0.75rem;
-            }
+            /* 2-col grid for stats so they're not squished in a row */
+            .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; justify-items: center; }
+            .stat-number { font-size: 2rem; }
+            .stat-label { font-size: .88rem; }
 
-            .category-card {
-                padding: 1rem 0.5rem;
-            }
+            /* Logo smaller */
+            .logo { font-size: 1.4rem; }
+            .nav-container { padding: 0 1rem; }
 
-            .category-icon {
-                font-size: 1.8rem;
-            }
+            /* CTA section */
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-buttons .btn { width: 100%; max-width: 320px; justify-content: center; }
+        }
+
+        @media (max-width: 360px) {
+            .hero { padding: 6.5rem 0 3rem; }
+            .hero h1 { font-size: 1.4rem; }
+            .stat-number { font-size: 1.7rem; }
         }
 
         /* ANIMATIONS */
@@ -638,7 +649,7 @@
             </a>
 
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
+                <i class="fas fa-bars" id="menuIcon"></i>
             </button>
 
             <div class="nav-menu" id="navMenu">
@@ -921,14 +932,17 @@
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navMenu = document.getElementById('navMenu');
+        const menuIcon = document.getElementById('menuIcon');
         if (mobileMenuBtn && navMenu) {
             mobileMenuBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                navMenu.classList.toggle('active');
+                const isOpen = navMenu.classList.toggle('active');
+                menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
             });
             document.addEventListener('click', function (e) {
                 if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                     navMenu.classList.remove('active');
+                    menuIcon.className = 'fas fa-bars';
                 }
             });
         }

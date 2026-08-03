@@ -65,52 +65,87 @@ def dashboard():
 @login_required
 def donate():
     if current_user.role != 'donor':
-        flash("You are not a donor. Cannot donate.")
+        flash("You are not a donor. Cannot donate.", "error")
         return redirect(url_for('main.dashboard'))
-    
+
     if request.method == 'POST':
-        item = request.form.get('item')
-        category = request.form.get('category', 'General')
-        quantity = request.form.get('quantity')
-        description = request.form.get('description')
-        location = request.form.get('location')
-        image_file = request.files.get('donation_image')
+        # Support multi-item donations: items[] arrays
+        items = request.form.getlist('item[]')
+        categories = request.form.getlist('category[]')
+        quantities = request.form.getlist('quantity[]')
+        descriptions = request.form.getlist('description[]')
+        locations = request.form.getlist('location[]')
+        contact_methods = request.form.getlist('contact_method[]')
+        phone_numbers = request.form.getlist('phone_number[]')
+        images = request.files.getlist('donation_image[]')
 
-        new_donation = Donation(
-            donor_id=current_user.id,
-            item=item,
-            category=category,
-            quantity=quantity,
-            description=description,
-            location=location
-        )
-        db.session.add(new_donation)
+        if not items or not any(i.strip() for i in items):
+            flash("Please provide at least one item.", "error")
+            return redirect(url_for('main.donate'))
+
+        saved_count = 0
+        for i, item in enumerate(items):
+            item = item.strip()
+            if not item:
+                continue
+
+            category = categories[i] if i < len(categories) else 'General'
+            quantity = quantities[i] if i < len(quantities) else ''
+            description = descriptions[i] if i < len(descriptions) else ''
+            location = locations[i] if i < len(locations) else ''
+            contact_method = contact_methods[i] if i < len(contact_methods) else 'email'
+            phone_number = phone_numbers[i].strip() if i < len(phone_numbers) else ''
+
+            # Validate Kenyan phone number if contact method is phone
+            if contact_method == 'phone':
+                import re
+                ke_phone_re = re.compile(r'^(?:\+?254|0)[17]\d{8}$')
+                if not phone_number or not ke_phone_re.match(phone_number.replace(' ', '')):
+                    flash(f"Item {i+1}: Please enter a valid Kenyan phone number (e.g. 0712345678 or +254712345678).", "error")
+                    return redirect(url_for('main.donate'))
+
+            new_donation = Donation(
+                donor_id=current_user.id,
+                item=item,
+                category=category or 'General',
+                quantity=quantity,
+                description=description,
+                location=location
+            )
+            db.session.add(new_donation)
+            db.session.flush()  # get the ID before commit
+
+            # Handle image upload for this item
+            image_file = images[i] if i < len(images) else None
+            if image_file and image_file.filename:
+                filename = secure_filename(image_file.filename)
+                if not image_file.mimetype.startswith('image/'):
+                    flash(f'Item {i+1}: Only image uploads are allowed.')
+                    continue
+                image_file.seek(0, os.SEEK_END)
+                size_bytes = image_file.tell()
+                image_file.seek(0)
+                if size_bytes > 5 * 1024 * 1024:
+                    flash(f'Item {i+1}: Image must be <= 5MB.')
+                    continue
+
+                upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
+                os.makedirs(upload_dir, exist_ok=True)
+                save_path = os.path.join(upload_dir, filename)
+                image_file.save(save_path)
+
+                media = DonationMedia(donation_id=new_donation.id, file_path=f"/static/uploads/{filename}")
+                db.session.add(media)
+
+            saved_count += 1
+
         db.session.commit()
-
-        # Handle safe image upload
-        if image_file and image_file.filename:
-            filename = secure_filename(image_file.filename)
-            if not image_file.mimetype.startswith('image/'):
-                flash('Only image uploads are allowed.')
-                return redirect(url_for('main.donate'))
-            image_file.seek(0, os.SEEK_END)
-            size_bytes = image_file.tell()
-            image_file.seek(0)
-            if size_bytes > 5 * 1024 * 1024:
-                flash('Image must be <= 5MB.')
-                return redirect(url_for('main.donate'))
-
-            upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
-            os.makedirs(upload_dir, exist_ok=True)
-            save_path = os.path.join(upload_dir, filename)
-            image_file.save(save_path)
-
-            media = DonationMedia(donation_id=new_donation.id, file_path=f"/static/uploads/{filename}")
-            db.session.add(media)
-            db.session.commit()
-        flash("Donation submitted! Thanks for donating on UjamaaFlow.")
+        if saved_count == 1:
+            flash("Donation submitted! Thank you for your generosity. 🎉", "success")
+        else:
+            flash(f"{saved_count} donations submitted! Thank you for your generosity. 🎉", "success")
         return redirect(url_for('main.dashboard'))
-    
+
     return render_template('donor/donate.html')
 
 @main.route('/request-resource', methods=['GET', 'POST'])

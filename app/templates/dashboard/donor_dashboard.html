@@ -351,7 +351,7 @@
             </a>
 
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
+                <i class="fas fa-bars" id="menuIcon"></i>
             </button>
 
             <div class="nav-menu" id="navMenu">
@@ -501,14 +501,17 @@
     <script>
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navMenu = document.getElementById('navMenu');
+        const menuIcon = document.getElementById('menuIcon');
         if (mobileMenuBtn && navMenu) {
             mobileMenuBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                navMenu.classList.toggle('active');
+                const isOpen = navMenu.classList.toggle('active');
+                menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
             });
             document.addEventListener('click', function(e) {
                 if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                     navMenu.classList.remove('active');
+                    menuIcon.className = 'fas fa-bars';
                 }
             });
         }
