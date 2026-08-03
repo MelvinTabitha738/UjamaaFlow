@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UjamaaFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary-blue: #2563EB;
@@ -89,8 +91,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .nav-menu {
@@ -264,9 +273,17 @@
             animation: numberPulse 2.5s infinite ease-in-out;
         }
 
-        .stat-item:nth-child(1) .stat-number { animation-delay: 0s; }
-        .stat-item:nth-child(2) .stat-number { animation-delay: 0.8s; }
-        .stat-item:nth-child(3) .stat-number { animation-delay: 1.6s; }
+        .stat-item:nth-child(1) .stat-number {
+            animation-delay: 0s;
+        }
+
+        .stat-item:nth-child(2) .stat-number {
+            animation-delay: 0.8s;
+        }
+
+        .stat-item:nth-child(3) .stat-number {
+            animation-delay: 1.6s;
+        }
 
         .stat-label {
             font-size: 1.05rem;
@@ -278,10 +295,13 @@
         }
 
         @keyframes numberPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 text-shadow: 0 0 15px rgba(234, 88, 12, 0.6), 0 2px 8px rgba(0, 0, 0, 0.9);
             }
+
             50% {
                 transform: scale(1.2);
                 color: #FF7A00;
@@ -395,7 +415,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border: 2px solid transparent;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
         .category-card:hover {
@@ -604,6 +624,7 @@
         }
     </style>
 </head>
+
 <body>
 
 
@@ -615,7 +636,7 @@
                 <i class="fas fa-heart"></i>
                 UjamaaFlow
             </a>
-            
+
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
@@ -629,24 +650,25 @@
 
                 <div class="nav-auth">
                     {% if current_user.is_authenticated %}
-                        <span style="color: var(--white); margin-right: 0.5rem;">Welcome, {{ current_user.username }}!</span>
-                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">
-                            <i class="fas fa-tachometer-alt"></i>
-                            Dashboard
-                        </a>
-                        <a href="{{ url_for('auth.logout') }}" class="btn btn-primary">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Logout
-                        </a>
+                    <span style="color: var(--white); margin-right: 0.5rem;">Welcome, {{ current_user.username
+                        }}!</span>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-primary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
                     {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
-                        </a>
-                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i>
-                            Register
-                        </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Register
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -657,19 +679,22 @@
     <section class="hero" id="home">
         <div class="hero-content fade-in">
             <h1>Share Resources, Transform Lives</h1>
-            <p>Welcome to UjamaaFlow! is a platform that connects donors and recipients. Every donation creates ripples of hope in our community. Together, we can bridge the gap between abundance and need.</p>
-            
+            <p>Welcome to UjamaaFlow! is a platform that connects donors and recipients. Every donation creates ripples
+                of hope in our community. Together, we can bridge the gap between abundance and need.</p>
+
             <div class="cta-buttons">
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                        <i class="fas fa-gift"></i>
-                        Go to Dashboard
-                    </a>
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary"
+                    style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    <i class="fas fa-gift"></i>
+                    Go to Dashboard
+                </a>
                 {% else %}
-                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                        <i class="fas fa-gift"></i>
-                        Start Donating
-                    </a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary"
+                    style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    <i class="fas fa-gift"></i>
+                    Start Donating
+                </a>
                 {% endif %}
                 <a href="#resources" class="btn btn-white" style="font-size: 1.1rem; padding: 1rem 2rem;">
                     <i class="fas fa-search"></i>
@@ -680,15 +705,18 @@
             <!-- HOMEPAGE STATS - ORIGINAL STYLE & ORANGE COLOR -->
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-number" id="totalDonations">{{ total_donations if total_donations is not none else 0 }}</div>
+                    <div class="stat-number" id="totalDonations">{{ total_donations if total_donations is not none else
+                        0 }}</div>
                     <div class="stat-label">Items Donated</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="helpedFamilies">{{ families_helped if families_helped is not none else 0 }}</div>
+                    <div class="stat-number" id="helpedFamilies">{{ families_helped if families_helped is not none else
+                        0 }}</div>
                     <div class="stat-label">Families Helped</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="activeDonors">{{ active_donors if active_donors is not none else 0 }}</div>
+                    <div class="stat-number" id="activeDonors">{{ active_donors if active_donors is not none else 0 }}
+                    </div>
                     <div class="stat-label">Active Donors</div>
                 </div>
             </div>
@@ -709,7 +737,8 @@
                         <i class="fas fa-user-plus"></i>
                     </div>
                     <h3>Easy Registration</h3>
-                    <p>Join as a UjamaaFlow or Receiver in minutes. Secure authentication ensures safe transactions and builds trust in our community.</p>
+                    <p>Join as a UjamaaFlow or Receiver in minutes. Secure authentication ensures safe transactions and
+                        builds trust in our community.</p>
                 </div>
 
                 <div class="feature-card fade-in">
@@ -717,7 +746,8 @@
                         <i class="fas fa-upload"></i>
                     </div>
                     <h3>Post Resources</h3>
-                    <p>Donors can easily list items with photos, descriptions, and pickup details. Categorized listings make finding help simple.</p>
+                    <p>Donors can easily list items with photos, descriptions, and pickup details. Categorized listings
+                        make finding help simple.</p>
                 </div>
 
                 <div class="feature-card fade-in">
@@ -725,7 +755,8 @@
                         <i class="fas fa-search"></i>
                     </div>
                     <h3>Smart Matching</h3>
-                    <p>Advanced filters help receivers find exactly what they need by category, location, and urgency. No more endless searching.</p>
+                    <p>Advanced filters help receivers find exactly what they need by category, location, and urgency.
+                        No more endless searching.</p>
                 </div>
 
                 <div class="feature-card fade-in">
@@ -733,7 +764,8 @@
                         <i class="fas fa-handshake"></i>
                     </div>
                     <h3>Direct Connection</h3>
-                    <p>Request items with personalized messages. Our notification system ensures quick responses and smooth coordination.</p>
+                    <p>Request items with personalized messages. Our notification system ensures quick responses and
+                        smooth coordination.</p>
                 </div>
 
                 <div class="feature-card fade-in">
@@ -741,7 +773,8 @@
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <h3>Safe & Moderated</h3>
-                    <p>Admin oversight prevents abuse while maintaining privacy. Report system ensures our community stays helpful and respectful.</p>
+                    <p>Admin oversight prevents abuse while maintaining privacy. Report system ensures our community
+                        stays helpful and respectful.</p>
                 </div>
 
                 <div class="feature-card fade-in">
@@ -749,7 +782,8 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Track Impact</h3>
-                    <p>See your donation history and the lives you've touched. Transparency shows the real difference your generosity makes.</p>
+                    <p>See your donation history and the lives you've touched. Transparency shows the real difference
+                        your generosity makes.</p>
                 </div>
             </div>
         </div>
@@ -797,23 +831,24 @@
         <div class="container">
             <div class="cta-content">
                 <h2>Ready to Make a Difference?</h2>
-                <p>Join thousands of compassionate individuals who are transforming communities through sharing. Every small act of kindness creates waves of positive change.</p>
-                
+                <p>Join thousands of compassionate individuals who are transforming communities through sharing. Every
+                    small act of kindness creates waves of positive change.</p>
+
                 <div class="cta-buttons">
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-white">
-                            <i class="fas fa-heart"></i>
-                            Go to Dashboard
-                        </a>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-white">
+                        <i class="fas fa-heart"></i>
+                        Go to Dashboard
+                    </a>
                     {% else %}
-                        <a href="{{ url_for('auth.register') }}" class="btn btn-white">
-                            <i class="fas fa-heart"></i>
-                            Become a Donor
-                        </a>
-                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline">
-                            <i class="fas fa-hands-helping"></i>
-                            Find Help
-                        </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-white">
+                        <i class="fas fa-heart"></i>
+                        Become a Donor
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline">
+                        <i class="fas fa-hands-helping"></i>
+                        Find Help
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -829,37 +864,40 @@
                         <h3>UjamaaFlow</h3>
                         <p>Connecting hearts through sharing. Building stronger communities one donation at a time.</p>
                         <div style="margin-top: 1rem;">
-                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i class="fab fa-facebook"></i></a>
-                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i class="fab fa-twitter"></i></a>
-                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i class="fab fa-instagram"></i></a>
+                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i
+                                    class="fab fa-facebook"></i></a>
+                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i
+                                    class="fab fa-twitter"></i></a>
+                            <a href="#" style="display: inline-block; margin-right: 1rem;"><i
+                                    class="fab fa-instagram"></i></a>
                             <a href="#" style="display: inline-block;"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
-                    
+
                     <div class="footer-section">
                         <h3>Quick Links</h3>
                         <a href="#features">How It Works</a>
                         <a href="#resources">Browse Resources</a>
                         {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                        <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
                         {% endif %}
                         <a href="{{ url_for('main.contact') }}">About Us</a>
                     </div>
-                    
+
                     <div class="footer-section">
                         <h3>Support</h3>
                         <a href="{{ url_for('main.contact') }}">Contact Us</a>
                         <a href="#">Help Center</a>
                         <a href="#">Safety Guidelines</a>
                     </div>
-                    
+
                     <div class="footer-section">
                         <h3>Legal</h3>
                         <a href="#">Privacy Policy</a>
                         <a href="#">Terms of Service</a>
                     </div>
                 </div>
-                
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 UjamaaFlow. All rights reserved. Made with ❤️ for our community.</p>
                 </div>
@@ -884,11 +922,11 @@
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navMenu = document.getElementById('navMenu');
         if (mobileMenuBtn && navMenu) {
-            mobileMenuBtn.addEventListener('click', function(e) {
+            mobileMenuBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
                 navMenu.classList.toggle('active');
             });
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                     navMenu.classList.remove('active');
                 }
@@ -905,7 +943,7 @@
                 return;
             }
             let increment = Math.max(1, finalVal / (duration / 16));
-            
+
             function updateNumber() {
                 start += increment;
                 if (start < finalVal) {
@@ -923,9 +961,9 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     animateNumber(document.getElementById('totalDonations'), {{ total_donations or 0 }});
-                    animateNumber(document.getElementById('helpedFamilies'), {{ families_helped or 0 }});
-                    animateNumber(document.getElementById('activeDonors'), {{ active_donors or 0 }});
-                    observer.unobserve(entry.target);
+            animateNumber(document.getElementById('helpedFamilies'), {{ families_helped or 0 }});
+        animateNumber(document.getElementById('activeDonors'), {{ active_donors or 0 }});
+        observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.2 });
@@ -938,16 +976,16 @@
         // Category filtering function
         function filterByCategory(category) {
             {% if current_user.is_authenticated and current_user.role == 'recipient' %}
-                window.location.href = "{{ url_for('main.browse') }}?category=" + encodeURIComponent(category);
+            window.location.href = "{{ url_for('main.browse') }}?category=" + encodeURIComponent(category);
             {% elif current_user.is_authenticated %}
-                window.location.href = "{{ url_for('main.resource') }}";
+            window.location.href = "{{ url_for('main.resource') }}";
             {% else %}
-                window.location.href = "{{ url_for('auth.login') }}";
+            window.location.href = "{{ url_for('auth.login') }}";
             {% endif %}
         }
 
         // Navbar scroll effect
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const navbar = document.getElementById('navbar');
             if (navbar) {
                 if (window.scrollY > 50) {
@@ -961,4 +999,5 @@
 
     </script>
 </body>
+
 </html>
